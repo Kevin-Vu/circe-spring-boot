@@ -5,9 +5,9 @@ import com.okayo.facture.dto.client.CreateClientDto;
 import com.okayo.facture.util.ClientUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 
-public class ClientFactory {
+public class ClientFactoryUtils {
 
-    private ClientFactory(){}
+    private ClientFactoryUtils(){}
 
     public static ClientDto generateClientDto(){
         return new ClientDto().setAdresse(RandomStringUtils.randomAlphanumeric(30))

@@ -4,7 +4,7 @@ package com.okayo.facture.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.okayo.facture.dto.designation.CreateDesignationDto;
 import com.okayo.facture.dto.facture.FactureDto;
-import com.okayo.facture.factory.DesignationFactory;
+import com.okayo.facture.factory.DesignationFactoryUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,7 +78,7 @@ public class TestFactureController {
         // Given
         HttpHeaders params = new HttpHeaders();
         params.add("clientId", "3");
-        List<CreateDesignationDto> dtoList = DesignationFactory.generateCreateDesignationDtoList();
+        List<CreateDesignationDto> dtoList = DesignationFactoryUtils.generateCreateDesignationDtoList();
 
         // When
         MockHttpServletResponse response = mockMvc.perform(
@@ -101,7 +101,7 @@ public class TestFactureController {
         // Given
         HttpHeaders params = new HttpHeaders();
         params.add("clientId", "3");
-        List<CreateDesignationDto> dtoList = DesignationFactory.generateCreateDesignationDtoList();
+        List<CreateDesignationDto> dtoList = DesignationFactoryUtils.generateCreateDesignationDtoList();
         for(CreateDesignationDto c : dtoList){
             c.setName(null);
         }

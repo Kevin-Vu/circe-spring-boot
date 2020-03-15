@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.okayo.facture.dto.client.ClientDto;
 import com.okayo.facture.dto.client.CreateClientDto;
 import com.okayo.facture.entity.ClientEntity;
-import com.okayo.facture.factory.ClientFactory;
-import com.okayo.facture.repository.ClientRepository;
+import com.okayo.facture.factory.ClientFactoryUtils;
 import com.okayo.facture.service.ClientService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,9 +34,6 @@ public class TestClientController {
     private MockMvc mockMvc;
 
     @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
     private ClientService clientService;
 
     private static final String API_CLIENT_URL = "/api/client";
@@ -58,7 +54,7 @@ public class TestClientController {
     public void testCreateClient() throws Exception {
 
         // Given
-        CreateClientDto createClientDto = ClientFactory.generateCreateClientDto();
+        CreateClientDto createClientDto = ClientFactoryUtils.generateCreateClientDto();
 
         // When
         MockHttpServletResponse response = mockMvc.perform(
@@ -129,7 +125,7 @@ public class TestClientController {
     public void testUpdateClient() throws Exception{
 
         // Given
-        ClientDto clientDto = ClientFactory.generateClientDto().setId(1L);
+        ClientDto clientDto = ClientFactoryUtils.generateClientDto().setId(1L);
 
         // When
         MockHttpServletResponse response = mockMvc.perform(
@@ -156,7 +152,7 @@ public class TestClientController {
     public void testUpdateBadClient() throws Exception{
 
         // Given
-        ClientDto clientDto = ClientFactory.generateClientDto().setId(-1L);
+        ClientDto clientDto = ClientFactoryUtils.generateClientDto().setId(-1L);
 
         // When
         MockHttpServletResponse response = mockMvc.perform(

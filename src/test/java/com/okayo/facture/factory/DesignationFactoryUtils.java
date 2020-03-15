@@ -6,9 +6,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DesignationFactory {
+public class DesignationFactoryUtils {
 
-    private DesignationFactory(){}
+    private DesignationFactoryUtils(){}
 
     public static CreateDesignationDto generateCreateDesignationDto(){
         return new CreateDesignationDto().setName(RandomStringUtils.randomAlphanumeric(30))

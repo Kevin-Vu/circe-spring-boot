@@ -2,7 +2,6 @@ package com.okayo.facture.service.impl;
 
 import com.okayo.facture.configuration.OkayoConfiguration;
 import com.okayo.facture.dto.designation.CreateDesignationDto;
-import com.okayo.facture.dto.designation.DesignationDto;
 import com.okayo.facture.dto.facture.FactureDto;
 import com.okayo.facture.dto.mapper.DesignationMapper;
 import com.okayo.facture.dto.mapper.FactureMapper;

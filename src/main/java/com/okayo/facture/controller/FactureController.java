@@ -3,7 +3,6 @@ package com.okayo.facture.controller;
 import com.okayo.facture.dto.designation.CreateDesignationDto;
 import com.okayo.facture.dto.facture.FactureDto;
 import com.okayo.facture.entity.ClientEntity;
-import com.okayo.facture.exception.badrequest.ClientBadRequestException;
 import com.okayo.facture.exception.badrequest.DesignationBadRequestException;
 import com.okayo.facture.exception.notfound.ClientNotFoundException;
 import com.okayo.facture.repository.FactureRepository;
@@ -25,9 +24,6 @@ public class FactureController {
 
     @Autowired
     private ClientService clientService;
-
-    @Autowired
-    private FactureRepository factureRepository;
 
 
     /**
