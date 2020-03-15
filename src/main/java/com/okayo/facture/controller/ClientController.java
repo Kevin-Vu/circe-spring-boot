@@ -8,6 +8,7 @@ import com.okayo.facture.exception.badrequest.ClientBadRequestException;
 import com.okayo.facture.exception.notfound.ClientNotFoundException;
 import com.okayo.facture.service.ClientService;
 import com.okayo.facture.util.ClientUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class ClientController {
      * @param createClientDto : CreateClientDto
      * @return : Response status
      */
+    @ApiOperation(value = "Créer un nouveau client")
     @PostMapping(value = "/api/client")
     public ResponseEntity<HttpStatus> createClient(@RequestBody CreateClientDto createClientDto) throws ClientBadRequestException {
         if(!ClientUtil.checkCreateClientInput(createClientDto)){
@@ -43,6 +45,7 @@ public class ClientController {
      * @return : ClientDto
      * @throws ClientNotFoundException
      */
+    @ApiOperation(value = "Récupère un client par son nom")
     @GetMapping(value = "/api/client")
     public ResponseEntity<ClientDto> getClientByName(@RequestParam String name) throws ClientNotFoundException {
         ClientEntity clientEntity = clientService.loadClientByName(name);
@@ -56,6 +59,7 @@ public class ClientController {
      * @return : Response status
      * @throws ClientNotFoundException
      */
+    @ApiOperation(value = "Met à jour un client")
     @PatchMapping(value = "/api/client")
     public ResponseEntity<HttpStatus> updateClient(@RequestBody ClientDto clientDto) throws ClientNotFoundException, ClientBadRequestException {
         if(!ClientUtil.checkClientInput(clientDto)){
@@ -71,6 +75,7 @@ public class ClientController {
      * @return : Response status
      * @throws ClientNotFoundException
      */
+    @ApiOperation(value = "Supprime un client d'après son id")
     @DeleteMapping(value = "/api/client")
     public ResponseEntity<HttpStatus> deleteClientById(@RequestParam Long clientId) throws ClientNotFoundException {
         if(clientId == null){

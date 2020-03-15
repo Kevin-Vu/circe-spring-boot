@@ -5,10 +5,10 @@ import com.okayo.facture.dto.facture.FactureDto;
 import com.okayo.facture.entity.ClientEntity;
 import com.okayo.facture.exception.badrequest.DesignationBadRequestException;
 import com.okayo.facture.exception.notfound.ClientNotFoundException;
-import com.okayo.facture.repository.FactureRepository;
 import com.okayo.facture.service.ClientService;
 import com.okayo.facture.service.FactureService;
 import com.okayo.facture.util.DesignationUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +32,7 @@ public class FactureController {
      * @param clientId : id of the Client
      * @return
      */
+    @ApiOperation(value = "Créé une nouvelle facture pour un client à partir de son id et d'une liste de désignations")
     @PostMapping(value = "/api/facture")
     public ResponseEntity<HttpStatus> createFacture(@RequestBody List<CreateDesignationDto> createDesignationDtoList, @RequestParam Long clientId) throws ClientNotFoundException, DesignationBadRequestException {
 
@@ -55,6 +56,7 @@ public class FactureController {
      * @return : list of FactureDto
      * @throws ClientNotFoundException
      */
+    @ApiOperation(value = "Récupère toutes les factures d'un client")
     @GetMapping(value = "/api/facture")
     public ResponseEntity<List<FactureDto>> getAllFactureForClient(@RequestParam Long clientId) throws ClientNotFoundException {
         if(clientId == null){
