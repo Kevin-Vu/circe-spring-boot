@@ -7,8 +7,11 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class CreateClientDto {
 
-    private String name;
-    private String adresse;
-    private Integer codePostal;
+    private String firstname;
+    private String lastname;
+    private String email;
+    private String password;
+    private String authority;
+    private String company;
 
 }

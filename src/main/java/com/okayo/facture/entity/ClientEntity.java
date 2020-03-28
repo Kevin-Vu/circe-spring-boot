@@ -19,19 +19,30 @@ public class ClientEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", unique = true, nullable = false)
-    private String name;
+    @Column(name = "firstname", nullable = false)
+    private String firstname;
 
-    @Column(name = "code_client", updatable = false, unique = true, nullable = false)
-    private String codeClient;
+    @Column(name = "lastname", nullable = false)
+    private String lastname;
 
-    @Column(name = "adresse", nullable = false)
-    private String adresse;
+    @Column(name = "client_code", updatable = false, unique = true, nullable = false)
+    private String clientCode;
 
-    @Column(name = "code_postal", nullable = false)
-    private Integer codePostal;
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_id_authority", nullable = false)
+    private AuthorityEntity authorityEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_id_company", nullable = false, updatable = false)
+    private CompanyEntity companyEntity;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<FactureEntity> factures = new ArrayList<>();
+    private List<InvoiceEntity> invoices = new ArrayList<>();
 
 }

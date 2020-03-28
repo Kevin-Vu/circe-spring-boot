@@ -2,8 +2,9 @@ package com.okayo.facture.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.okayo.facture.configuration.BaseTest;
 import com.okayo.facture.dto.designation.CreateDesignationDto;
-import com.okayo.facture.dto.facture.FactureDto;
+import com.okayo.facture.dto.invoice.InvoiceDto;
 import com.okayo.facture.factory.DesignationFactoryUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,13 +31,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @TestPropertySource(locations = {"classpath:test.properties"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class TestFactureController {
+public class TestInvoiceController extends BaseTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    private static final String API_FACTURE_URL = "/api/facture";
-    private JacksonTester<List<FactureDto>> jsonFactureDtoList;
+    private JacksonTester<List<InvoiceDto>> jsonFactureDtoList;
     private JacksonTester<List<CreateDesignationDto>> jsonCreateDesignationDtoList;
 
 
@@ -51,20 +51,17 @@ public class TestFactureController {
      * @throws Exception
      */
     @Test
+    @WithUserDetails(value = "CU-AD-SG-585", userDetailsServiceBeanName = "userDetailsService")
     public void testGetAllFactureForClient() throws Exception {
-
-        // Given
-        HttpHeaders params = new HttpHeaders();
-        params.set("clientId", "1");
 
         // When
         MockHttpServletResponse response = mockMvc.perform(
-                get(API_FACTURE_URL).params(params)
+                get("/api/auth/facture")
         ).andReturn().getResponse();
 
         // Then
-        List<FactureDto> factureDtoList = jsonFactureDtoList.parse(response.getContentAsString()).getObject();
-        Assert.assertFalse(factureDtoList.isEmpty());
+        List<InvoiceDto> invoiceDtoList = jsonFactureDtoList.parse(response.getContentAsString()).getObject();
+        Assert.assertFalse(invoiceDtoList.isEmpty());
     }
 
 
@@ -73,17 +70,15 @@ public class TestFactureController {
      * @throws Exception
      */
     @Test
+    @WithUserDetails(value = "CU-AD-SG-585", userDetailsServiceBeanName = "userDetailsService")
     public void testCreateFacture() throws Exception {
 
         // Given
-        HttpHeaders params = new HttpHeaders();
-        params.add("clientId", "3");
         List<CreateDesignationDto> dtoList = DesignationFactoryUtils.generateCreateDesignationDtoList();
 
         // When
         MockHttpServletResponse response = mockMvc.perform(
-                post(API_FACTURE_URL).accept(MediaType.ALL).content(jsonCreateDesignationDtoList.write(dtoList).getJson())
-                        .params(params)
+                post("/api/auth/manager/facture").accept(MediaType.ALL).content(jsonCreateDesignationDtoList.write(dtoList).getJson())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
 
@@ -96,11 +91,10 @@ public class TestFactureController {
      * @throws Exception
      */
     @Test
+    @WithUserDetails(value = "CU-AD-SG-585", userDetailsServiceBeanName = "userDetailsService")
     public void testCreateBadFacture() throws Exception {
 
         // Given
-        HttpHeaders params = new HttpHeaders();
-        params.add("clientId", "3");
         List<CreateDesignationDto> dtoList = DesignationFactoryUtils.generateCreateDesignationDtoList();
         for(CreateDesignationDto c : dtoList){
             c.setName(null);
@@ -108,8 +102,7 @@ public class TestFactureController {
 
         // When
         MockHttpServletResponse response = mockMvc.perform(
-                post(API_FACTURE_URL).accept(MediaType.ALL).content(jsonCreateDesignationDtoList.write(dtoList).getJson())
-                        .params(params)
+                post("/api/auth/manager/facture").accept(MediaType.ALL).content(jsonCreateDesignationDtoList.write(dtoList).getJson())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
 

@@ -8,10 +8,10 @@ import lombok.experimental.Accessors;
 public class CreateDesignationDto {
 
     private String name;
-    private float tva;
-    private float prixUnitHt;
-    private Integer quantite;
-    private float reduction;
-    private float totalHt;
+    private Float taxes;
+    private Float unitPriceNoTaxes;
+    private Integer quantity;
+    private Float discount;
+    private Float totalNoTaxes;
 
 }

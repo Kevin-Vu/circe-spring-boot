@@ -12,11 +12,11 @@ public class DesignationFactoryUtils {
 
     public static CreateDesignationDto generateCreateDesignationDto(){
         return new CreateDesignationDto().setName(RandomStringUtils.randomAlphanumeric(30))
-                                        .setPrixUnitHt((float) 100.0)
-                                        .setQuantite(Integer.valueOf(RandomStringUtils.randomNumeric(1)))
-                                        .setReduction((float) 50.0)
-                                        .setTotalHt((float) 300.0)
-                                        .setTva((float) 19.8);
+                                        .setUnitPriceNoTaxes((float) 100.0)
+                                        .setQuantity(Integer.valueOf(RandomStringUtils.randomNumeric(1)))
+                                        .setDiscount((float) 50.0)
+                                        .setTotalNoTaxes((float) 300.0)
+                                        .setTaxes((float) 19.8);
     }
 
     public static List<CreateDesignationDto> generateCreateDesignationDtoList(){

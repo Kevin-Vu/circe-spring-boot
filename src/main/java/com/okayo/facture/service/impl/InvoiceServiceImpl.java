@@ -2,14 +2,14 @@ package com.okayo.facture.service.impl;
 
 import com.okayo.facture.configuration.OkayoConfiguration;
 import com.okayo.facture.dto.designation.CreateDesignationDto;
-import com.okayo.facture.dto.facture.FactureDto;
+import com.okayo.facture.dto.invoice.InvoiceDto;
 import com.okayo.facture.dto.mapper.DesignationMapper;
-import com.okayo.facture.dto.mapper.FactureMapper;
+import com.okayo.facture.dto.mapper.InvoiceMapper;
 import com.okayo.facture.entity.ClientEntity;
 import com.okayo.facture.entity.DesignationEntity;
-import com.okayo.facture.entity.FactureEntity;
-import com.okayo.facture.repository.FactureRepository;
-import com.okayo.facture.service.FactureService;
+import com.okayo.facture.entity.InvoiceEntity;
+import com.okayo.facture.repository.InvoiceRepository;
+import com.okayo.facture.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +19,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class FactureServiceImpl implements FactureService {
+public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
     private DesignationMapper designationMapper;
 
     @Autowired
-    private FactureMapper factureMapper;
+    private InvoiceMapper invoiceMapper;
 
     @Autowired
     private OkayoConfiguration okayoConfiguration;
 
     @Autowired
-    private FactureRepository factureRepository;
+    private InvoiceRepository invoiceRepository;
 
 
     /**
@@ -41,7 +41,7 @@ public class FactureServiceImpl implements FactureService {
      */
     @Override
     @Transactional
-    public FactureEntity createFacture(List<CreateDesignationDto> createDesignationDtoList, ClientEntity clientEntity){
+    public InvoiceEntity createFacture(List<CreateDesignationDto> createDesignationDtoList, ClientEntity clientEntity){
 
         // Convert
         List<DesignationEntity> designationEntityList = designationMapper.convertListCreateDto(createDesignationDtoList);
@@ -53,10 +53,10 @@ public class FactureServiceImpl implements FactureService {
 
         // Compute tva, ht, ttc
         for(DesignationEntity entity: designationEntityList){
-            float unitHt = (entity.getPrixUnitHt() * entity.getQuantite()) * (1 - entity.getReduction() / 100);
-            float unitTt = unitHt * (1 + entity.getTva() / (float) 100);
-            ttva += entity.getTva() * entity.getQuantite();
-            qte += entity.getQuantite();
+            float unitHt = (entity.getUnitPriceNoTaxes() * entity.getQuantity()) * (1 - entity.getDiscount() / 100);
+            float unitTt = unitHt * (1 + entity.getTaxes() / (float) 100);
+            ttva += entity.getTaxes() * entity.getQuantity();
+            qte += entity.getQuantity();
             ttc += unitTt;
             tth += unitHt;
         }
@@ -65,15 +65,15 @@ public class FactureServiceImpl implements FactureService {
         }
 
         // Create the facture entity
-        FactureEntity factureEntity = new FactureEntity().setClient(clientEntity)
-                                                        .setDateFacturation(Timestamp.valueOf(LocalDateTime.now()))
-                                                        .setTotalHt(tth)
-                                                        .setTotalTtc(ttc)
-                                                        .setTotalTva(ttva)
+        InvoiceEntity invoiceEntity = new InvoiceEntity().setClient(clientEntity)
+                                                        .setInvoiceDate(Timestamp.valueOf(LocalDateTime.now()))
+                                                        .setTotalNoTaxes(tth)
+                                                        .setTotalWithTaxes(ttc)
+                                                        .setTotalTaxes(ttva)
                                                         .setDesignations(designationEntityList)
-                                                        .setDateEcheance(Timestamp.valueOf(LocalDateTime.now().plusMonths(okayoConfiguration.getEcheance())));
+                                                        .setExpirityDate(Timestamp.valueOf(LocalDateTime.now().plusMonths(okayoConfiguration.getEcheance())));
 
-        return factureRepository.save(factureEntity);
+        return invoiceRepository.save(invoiceEntity);
     }
 
     /**
@@ -82,9 +82,9 @@ public class FactureServiceImpl implements FactureService {
      * @return : list of FactureDto
      */
     @Override
-    public List<FactureDto> getAllFactureForClient(ClientEntity clientEntity){
-        List<FactureEntity> factureEntityList = factureRepository.findAllByClient(clientEntity);
-        return factureMapper.convertListFactureEntity(factureEntityList);
+    public List<InvoiceDto> getAllFactureForClient(ClientEntity clientEntity){
+        List<InvoiceEntity> invoiceEntityList = invoiceRepository.findAllByClient(clientEntity);
+        return invoiceMapper.convertListInvoiceEntity(invoiceEntityList);
     }
 
 }

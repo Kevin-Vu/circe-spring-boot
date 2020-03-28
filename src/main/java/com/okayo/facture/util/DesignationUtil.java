@@ -36,7 +36,7 @@ public class DesignationUtil {
         if(createDesignationDto.getName() == null || createDesignationDto.getName().isEmpty()){
             return false;
         }
-        if(createDesignationDto.getTva() > 100){
+        if(createDesignationDto.getTaxes() > 100){
             return false;
         }
         return true;

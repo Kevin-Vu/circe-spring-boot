@@ -8,10 +8,11 @@ import lombok.experimental.Accessors;
 public class DesignationDto {
 
     private Long id;
-    private DesignationCatalogueDto designationCatalogueDto;
-    private float prixUnitHt;
-    private Integer quantite;
-    private float reduction;
-    private float totalHt;
+    private String name;
+    private Float taxes;
+    private Float unitPriceNoTaxes;
+    private Integer quantity;
+    private Float discount;
+    private Float totalNoTaxes;
 
 }

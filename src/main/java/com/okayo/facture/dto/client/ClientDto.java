@@ -8,9 +8,11 @@ import lombok.experimental.Accessors;
 public class ClientDto {
 
     private Long id;
-    private String name;
-    private String codeClient;
-    private String adresse;
-    private Integer codePostal;
+    private String firstname;
+    private String lastname;
+    private String clientCode;
+    private String email;
+    private String authority;
+    private String company;
 
 }

@@ -20,24 +20,24 @@ public class DesignationEntity {
     @Column(name = "name", updatable = false, nullable = false)
     private String name;
 
-    @Column(name = "tva", updatable = false, precision = 2, scale = 3, nullable = false)
-    private float tva;
+    @Column(name = "taxes", updatable = false, scale = 2, nullable = false)
+    private Float taxes;
 
-    @Column(name = "prix_unit_ht", updatable = false, precision = 2, scale = 10, nullable = false)
-    private float prixUnitHt;
+    @Column(name = "unit_price_no_taxes", updatable = false, scale = 2, nullable = false)
+    private Float unitPriceNoTaxes;
 
-    @Column(name = "quantite", nullable = false)
-    private Integer quantite;
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
 
-    @Column(name = "reduction", precision = 2, scale = 3, nullable = false) // Percentage 0 to 100
-    private float reduction;
+    @Column(name = "discount", scale = 2, nullable = false)
+    private Float discount;
 
-    @Column(name = "total_ht", precision = 2, scale = 10, nullable = false)
-    private float totalHt;
+    @Column(name = "total_no_taxes", scale = 2, nullable = false)
+    private Float totalNoTaxes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_id_facture")
-    private FactureEntity facture;
+    @JoinColumn(name = "fk_id_invoice")
+    private InvoiceEntity invoice;
 
 
 }

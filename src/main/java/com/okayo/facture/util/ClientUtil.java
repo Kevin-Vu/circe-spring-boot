@@ -2,6 +2,9 @@ package com.okayo.facture.util;
 
 import com.okayo.facture.dto.client.ClientDto;
 import com.okayo.facture.dto.client.CreateClientDto;
+import com.okayo.facture.entity.ClientEntity;
+import com.okayo.facture.security.CurrentUser;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.UUID;
 
@@ -18,40 +21,46 @@ public class ClientUtil {
         if(createClientDto == null){
             return false;
         }
-        if(createClientDto.getAdresse() == null || createClientDto.getAdresse().isEmpty()){
-            return false;
-        }
-        if(createClientDto.getCodePostal() == null){
-            return false;
-        }
-        if(createClientDto.getName() == null || createClientDto.getName().isEmpty()){
-            return false;
-        }
-        return true;
+        return !StringUtils.isBlank(createClientDto.getFirstname()) && !StringUtils.isBlank(createClientDto.getLastname()) &&
+                !StringUtils.isBlank(createClientDto.getPassword()) && !StringUtils.isBlank(createClientDto.getEmail()) &&
+                !StringUtils.isBlank(createClientDto.getCompany()) && !StringUtils.isBlank(createClientDto.getAuthority());
     }
 
     /**
-     * Check the content of a CreateClientDto
-     * @param clientDto : CreateClientDto
+     * Check the content of a ClientDto
+     * @param clientDto : ClientDto
      * @return : true if input is valid
      */
     public static boolean checkClientInput(ClientDto clientDto){
         if(clientDto == null){
             return false;
         }
-        if(clientDto.getId() == null){
+        if(clientDto.getId() == null || clientDto.getId() < 0){
             return false;
         }
-        if(clientDto.getAdresse() == null || clientDto.getAdresse().isEmpty()){
-            return false;
-        }
-        if(clientDto.getCodePostal() == null){
-            return false;
-        }
-        if(clientDto.getName() == null || clientDto.getName().isEmpty()){
-            return false;
-        }
-        return true;
+        return !StringUtils.isBlank(clientDto.getFirstname()) && !StringUtils.isBlank(clientDto.getLastname()) &&
+                !StringUtils.isBlank(clientDto.getEmail()) && !StringUtils.isBlank(clientDto.getCompany()) &&
+                !StringUtils.isBlank(clientDto.getAuthority());
+    }
+
+    /**
+     * Check if the user belongs to the company
+     * @param user : CurrentUser
+     * @param company : company name
+     * @return : boolean
+     */
+    public static boolean checkUserBelongsToCompany(CurrentUser user, String company){
+        return StringUtils.compare(user.getCompanyName(), company) == 0;
+    }
+
+    /**
+     * Check if the user belongs to the company
+     * @param user : CurrentUser
+     * @param clientEntity : ClientEntity
+     * @return : boolean
+     */
+    public static boolean checkUserBelongsToCompany(CurrentUser user, ClientEntity clientEntity){
+        return StringUtils.compare(user.getCompanyName(), clientEntity.getCompanyEntity().getName()) == 0;
     }
 
     /**

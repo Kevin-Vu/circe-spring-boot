@@ -1,15 +1,15 @@
 package com.okayo.facture.repository;
 
 import com.okayo.facture.entity.ClientEntity;
-import com.okayo.facture.entity.FactureEntity;
+import com.okayo.facture.entity.InvoiceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface FactureRepository extends JpaRepository<FactureEntity, Long> {
+public interface InvoiceRepository extends JpaRepository<InvoiceEntity, Long> {
 
-    List<FactureEntity> findAllByClient(ClientEntity clientEntity);
+    List<InvoiceEntity> findAllByClient(ClientEntity clientEntity);
 
 }
