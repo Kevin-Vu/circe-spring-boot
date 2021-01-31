@@ -1,0 +1,91 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="s001_01_creation_company" author="kvu">
+        <createTable tableName="d_company" >
+            <column name="com_id" type="INT" defaultValueComputed="nextval('company_sequence')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="com_name" type="VARCHAR(100)"/>
+            <column name="com_address" type="VARCHAR(100)"/>
+            <column name="com_city" type="VARCHAR(100)"/>
+            <column name="com_postal_code" type="INT"/>
+            <column name="com_created_by" type="VARCHAR(60)"/>
+            <column name="com_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="com_last_modified_by" type="VARCHAR(60)"/>
+            <column name="com_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="s001_02_creation_customer" author="kvu">
+        <createTable tableName="d_customer">
+            <column name="cus_id" type="INT" defaultValueComputed="nextval('customer_sequence')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cus_firstname" type="VARCHAR(100)"/>
+            <column name="cus_lastname" type="VARCHAR(100)"/>
+            <column name="cus_email" type="VARCHAR(100)"/>
+            <column name="cus_telephone" type="VARCHAR(20)"/>
+            <column name="cus_address" type="VARCHAR(20)"/>
+            <column name="cus_postal_code" type="VARCHAR(20)"/>
+            <column name="cus_city" type="VARCHAR(20)"/>
+            <column name="cus_ptr_com_id" type="INT">
+                <constraints foreignKeyName="fk_com_id" references="d_company(com_id)"/>
+            </column>
+            <column name="cus_created_by" type="VARCHAR(60)"/>
+            <column name="cus_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="cus_last_modified_by" type="VARCHAR(60)"/>
+            <column name="cus_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="s001_03_creation_invoice" author="kvu">
+        <createTable tableName="d_invoice">
+            <column name="ivc_id" type="INT" defaultValueComputed="nextval('invoice_sequence')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="ivc_invoice_date" type="TIMESTAMP"/>
+            <column name="ivc_expiration_date" type="TIMESTAMP"/>
+            <column name="ivc_total_taxes" type="FLOAT"/>
+            <column name="ivc_total_no_taxes" type="FLOAT"/>
+            <column name="ivc_total_with_taxes" type="FLOAT"/>
+            <column name="ivc_ptr_cst_id" type="INT">
+                <constraints foreignKeyName="fk_cus_id" references="d_customer(cus_id)"/>
+            </column>
+            <column name="ivc_created_by" type="VARCHAR(60)"/>
+            <column name="ivc_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="ivc_last_modified_by" type="VARCHAR(60)"/>
+            <column name="ivc_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="s001_04_creation_designation" author="kvu">
+        <createTable tableName="d_designation">
+            <column name="dsg_id" type="INT" defaultValueComputed="nextval('designation_sequence')">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="dsg_name" type="VARCHAR(60)"/>
+            <column name="dsg_taxes" type="FLOAT"/>
+            <column name="dsg_unit_price_no_taxes" type="FLOAT"/>
+            <column name="dsg_quantity" type="INT"/>
+            <column name="dsg_discount" type="FLOAT"/>
+            <column name="dsg_total_no_taxes" type="FLOAT"/>
+            <column name="dsg_total_taxes" type="FLOAT"/>
+            <column name="dsg_ptr_ivc_id" type="INT">
+                <constraints foreignKeyName="fk_ivc_id" references="d_invoice(ivc_id)"/>
+            </column>
+            <column name="dsg_created_by" type="VARCHAR(60)"/>
+            <column name="dsg_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="dsg_last_modified_by" type="VARCHAR(60)"/>
+            <column name="dsg_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="s001_05_add_pdt_type_design" author="kvu">
+        <addColumn tableName="d_designation">
+            <column name="dsg_product_type" afterColumn="dsg_total_taxes" type="VARCHAR(60)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

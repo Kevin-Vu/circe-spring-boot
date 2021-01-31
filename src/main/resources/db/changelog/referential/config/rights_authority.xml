@@ -1,0 +1,60 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="ra_001_add_admin_auth" author="kvu">
+        <insert tableName="r_authority">
+            <column name="ath_id" valueSequenceNext="authority_sequence"/>
+            <column name="ath_name" value="admin"/>
+            <column name="ath_created_by" value="kvu"/>
+            <column name="ath_created_date" valueDate="CURRENT_TIMESTAMP"/>
+            <column name="ath_last_modified_by" value="kvu"/>
+            <column name="ath_last_modified_date" valueDate="CURRENT_TIMESTAMP"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="ra_002_add_user_auth" author="kvu">
+        <insert tableName="r_authority">
+            <column name="ath_id" valueSequenceNext="authority_sequence"/>
+            <column name="ath_name" value="user"/>
+            <column name="ath_created_by" value="kvu"/>
+            <column name="ath_created_date" valueDate="CURRENT_TIMESTAMP"/>
+            <column name="ath_last_modified_by" value="kvu"/>
+            <column name="ath_last_modified_date" valueDate="CURRENT_TIMESTAMP"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="ra_003_add_admin_right" author="kvu">
+        <insert tableName="r_right">
+            <column name="rgt_id" valueSequenceNext="right_sequence"/>
+            <column name="rgt_name" value="RIGHT_ADMIN"/>
+            <column name="rgt_created_by" value="kvu"/>
+            <column name="rgt_created_date" valueDate="CURRENT_TIMESTAMP"/>
+            <column name="rgt_last_modified_by" value="kvu"/>
+            <column name="rgt_last_modified_date" valueDate="CURRENT_TIMESTAMP"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="ra_004_join_right_auth_admin" author="kvu">
+        <sql>
+            INSERT INTO r_join_authority_right(
+            jar_ptr_auth_id,
+            jar_ptr_right_id)
+            VALUES(
+            (SELECT ath_id FROM r_authority WHERE ath_name = 'admin'),
+            (SELECT rgt_id FROM r_right WHERE rgt_name = 'RIGHT_ADMIN'))
+        </sql>
+    </changeSet>
+
+    <changeSet id="ra_005_add_manager_auth" author="kvu">
+        <insert tableName="r_authority">
+            <column name="ath_id" valueSequenceNext="authority_sequence"/>
+            <column name="ath_name" value="manager"/>
+            <column name="ath_created_by" value="kvu"/>
+            <column name="ath_created_date" valueDate="CURRENT_TIMESTAMP"/>
+            <column name="ath_last_modified_by" value="kvu"/>
+            <column name="ath_last_modified_date" valueDate="CURRENT_TIMESTAMP"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
