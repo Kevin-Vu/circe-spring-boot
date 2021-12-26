@@ -1,8 +1,6 @@
 package com.circe.invoice.service.impl;
 
-import com.circe.invoice.configuration.CirceConfiguration;
 import com.circe.invoice.dto.invoice.InvoiceDto;
-import com.circe.invoice.dto.mapper.DesignationMapper;
 import com.circe.invoice.dto.mapper.InvoiceMapper;
 import com.circe.invoice.repository.data.InvoiceRepository;
 import com.circe.invoice.service.InvoiceService;
@@ -15,13 +13,7 @@ import java.util.List;
 public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
-    private DesignationMapper designationMapper;
-
-    @Autowired
     private InvoiceMapper invoiceMapper;
-
-    @Autowired
-    private CirceConfiguration circeConfiguration;
 
     @Autowired
     private InvoiceRepository invoiceRepository;
@@ -32,20 +24,4 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

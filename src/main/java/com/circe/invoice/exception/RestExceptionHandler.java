@@ -1,6 +1,5 @@
 package com.circe.invoice.exception;
 
-import com.circe.invoice.configuration.CirceConfiguration;
 import com.circe.invoice.exception.badrequest.UserBadRequestException;
 import com.circe.invoice.exception.notfound.PropertyKeyNotFoundException;
 import com.circe.invoice.exception.notfound.UserNotFoundException;
@@ -23,9 +22,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired
     private MessageSource messageSource;
-
-    @Autowired
-    private CirceConfiguration configuration;
 
     /**
      * Get a message from a property file given a key and a language

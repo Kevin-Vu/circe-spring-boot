@@ -22,9 +22,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserMapper userMapper;
-
     /**
      * Create an UserEntity in database from a CreateUserDto
      *
