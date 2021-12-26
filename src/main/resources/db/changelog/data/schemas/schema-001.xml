@@ -88,4 +88,23 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="s001_06_customer_audit" author="kvu">
+        <createTable tableName="d_customer_aud">
+            <column name="cus_id" type="INT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cus_firstname" type="VARCHAR(100)"/>
+            <column name="cus_lastname" type="VARCHAR(100)"/>
+            <column name="cus_email" type="VARCHAR(100)"/>
+            <column name="cus_telephone" type="VARCHAR(20)"/>
+            <column name="cus_address" type="VARCHAR(20)"/>
+            <column name="cus_postal_code" type="VARCHAR(20)"/>
+            <column name="cus_city" type="VARCHAR(20)"/>
+            <column name="cus_created_by" type="VARCHAR(60)"/>
+            <column name="cus_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="cus_last_modified_by" type="VARCHAR(60)"/>
+            <column name="cus_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

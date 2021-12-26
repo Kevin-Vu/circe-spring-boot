@@ -1,6 +1,7 @@
 package com.circe.invoice.entity.data;
 
 import lombok.*;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -21,7 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "d_customer")
-public class CustomerEntity implements Serializable, Auditable<String, Integer, LocalDateTime> {
+public class CustomerEntity implements Serializable {
 
     @Id
     @SequenceGenerator(name = "customer_generator", sequenceName = "customer_sequence", allocationSize = 1)
@@ -52,6 +53,7 @@ public class CustomerEntity implements Serializable, Auditable<String, Integer, 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cus_ptr_com_id")
+    @NotAudited
     private CompanyEntity compagny;
 
     @Column(name = "cus_created_by")
@@ -70,48 +72,4 @@ public class CustomerEntity implements Serializable, Auditable<String, Integer, 
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    @Override
-    public Optional<String> getCreatedBy() {
-        return Optional.ofNullable(this.createdBy);
-    }
-
-    @Override
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    @Override
-    public Optional<LocalDateTime> getCreatedDate() {
-        return Optional.ofNullable(this.createDate);
-    }
-
-    @Override
-    public void setCreatedDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    @Override
-    public Optional<String> getLastModifiedBy() {
-        return Optional.ofNullable(this.lastModifiedBy);
-    }
-
-    @Override
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    @Override
-    public Optional<LocalDateTime> getLastModifiedDate() {
-        return Optional.ofNullable(this.lastModifiedDate);
-    }
-
-    @Override
-    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    @Override
-    public boolean isNew() {
-        return this.id == null;
-    }
 }
