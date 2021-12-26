@@ -1,13 +1,13 @@
 [comment]: <> "[![CircleCI](https://circleci.com/gh/Kevin-Vu/okayo-facture.svg?style=svg)](https://circleci.com/gh/Kevin-Vu/okayo-facture)"  
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/652838ec809046299d53bb617ca74753)](https://www.codacy.com/gh/Kevin-Vu/circe-spring-boot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Kevin-Vu/circe-spring-boot&amp;utm_campaign=Badge_Grade)
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Version](https://img.shields.io/badge/version-4.0.1-blue)
 # Circe-Spring-Boot
 
 Manage your clients and their invoices.
 
 ## Prerequisite
 ```
-$ docker pull postgres:11
+$ docker pull postgres:14
 $ docker run --name circe-postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres:11
 $ docker exec circe-postgres psql -U postgres -c "CREATE DATABASE \"CIRCE_DATA\"" postgres
 $ docker exec circe-postgres psql -U postgres -c "CREATE DATABASE \"CIRCE_REFERENTIEL\"" postgres

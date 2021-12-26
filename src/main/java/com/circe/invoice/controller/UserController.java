@@ -1,6 +1,5 @@
 package com.circe.invoice.controller;
 
-import com.circe.invoice.dto.mapper.UserMapper;
 import com.circe.invoice.dto.user.CreateUserDto;
 import com.circe.invoice.dto.user.UserDto;
 import com.circe.invoice.exception.badrequest.UserBadRequestException;
@@ -21,9 +20,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserMapper userMapper;
 
     /**
      * Create an UserEntity in database from a CreateUserDto
