@@ -21,7 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "d_designation")
-public class DesignationEntity implements Serializable, Auditable<String, Integer, LocalDateTime> {
+public class DesignationEntity implements Serializable {
 
     @Id
     @SequenceGenerator(name = "designation_generator", sequenceName = "designation_sequence", allocationSize = 1)
@@ -73,48 +73,4 @@ public class DesignationEntity implements Serializable, Auditable<String, Intege
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    @Override
-    public Optional<String> getCreatedBy() {
-        return Optional.ofNullable(this.createdBy);
-    }
-
-    @Override
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    @Override
-    public Optional<LocalDateTime> getCreatedDate() {
-        return Optional.ofNullable(this.createDate);
-    }
-
-    @Override
-    public void setCreatedDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    @Override
-    public Optional<String> getLastModifiedBy() {
-        return Optional.ofNullable(this.lastModifiedBy);
-    }
-
-    @Override
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    @Override
-    public Optional<LocalDateTime> getLastModifiedDate() {
-        return Optional.ofNullable(this.lastModifiedDate);
-    }
-
-    @Override
-    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
-    @Override
-    public boolean isNew() {
-        return this.id == null;
-    }
 }

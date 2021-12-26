@@ -3,7 +3,7 @@ package com.circe.invoice.controller;
 import com.circe.invoice.dto.invoice.InvoiceDto;
 import com.circe.invoice.security.CurrentUser;
 import com.circe.invoice.service.InvoiceService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class InvoiceController {
      *
      * @return : list of InvoiceDto
      */
-    @ApiOperation(value = "Get all the invoices for a given customer")
+    @Operation(summary = "Get all the invoices for a given customer")
     @GetMapping(value = "/api/auth/invoice/all")
     public ResponseEntity<List<InvoiceDto>> getAllInvoicesForCustomer(CurrentUser user, @RequestParam Integer id) {
         return new ResponseEntity<>(invoiceService.getAllInvoicesForCustomer(id), HttpStatus.OK);

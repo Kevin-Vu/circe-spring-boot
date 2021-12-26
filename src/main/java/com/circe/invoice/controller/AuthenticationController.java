@@ -4,10 +4,8 @@ import com.circe.invoice.security.CurrentUser;
 import com.circe.invoice.security.jwt.JwtLoginRequest;
 import com.circe.invoice.security.jwt.JwtLoginResponse;
 import com.circe.invoice.security.jwt.JwtUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +23,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Api(tags = { "Authentication API" })
-@SwaggerDefinition(tags = @Tag(name = "Authentication API"))
+@Tag(name = "authent", description = "Authentication API")
 @RestController
 @RequestMapping("/api/sign-in")
 public class AuthenticationController {
@@ -37,7 +34,7 @@ public class AuthenticationController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @ApiOperation(value = "Login")
+    @Operation(summary = "Login")
     @PostMapping
     public ResponseEntity<JwtLoginResponse> authenticateUser(@Valid @RequestBody JwtLoginRequest loginRequest) {
 
