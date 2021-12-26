@@ -7,7 +7,7 @@ Manage your clients and their invoices.
 
 ## Prerequisite
 ```
-$ docker pull postgres:11
+$ docker pull postgres:14
 $ docker run --name circe-postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres:11
 $ docker exec circe-postgres psql -U postgres -c "CREATE DATABASE \"CIRCE_DATA\"" postgres
 $ docker exec circe-postgres psql -U postgres -c "CREATE DATABASE \"CIRCE_REFERENTIEL\"" postgres
