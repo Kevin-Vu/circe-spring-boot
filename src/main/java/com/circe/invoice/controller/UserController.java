@@ -8,7 +8,7 @@ import com.circe.invoice.exception.notfound.UserNotFoundException;
 import com.circe.invoice.security.CurrentUser;
 import com.circe.invoice.service.UserService;
 import com.circe.invoice.util.UserUtil;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class UserController {
      *
      * @return : UserDto
      */
-    @ApiOperation(value = "Create a new user")
+    @Operation(summary = "Create a new user")
     @PostMapping(value = "/api/auth/user")
     @PreAuthorize("hasAnyAuthority('RIGHT_ADMIN')")
     public ResponseEntity<UserDto> createUser(CurrentUser user, @RequestBody CreateUserDto createUserDto) throws UserBadRequestException {
@@ -61,7 +61,7 @@ public class UserController {
      *
      * @return : UserDto
      */
-    @ApiOperation(value = "Get a user by its id")
+    @Operation(summary = "Get a user by its id")
     @GetMapping(value = "/api/auth/user")
     public ResponseEntity<UserDto> getUser(CurrentUser user, @RequestParam Integer id) throws UserBadRequestException, UserNotFoundException {
         if(id == null || id < 0)
@@ -78,7 +78,7 @@ public class UserController {
      *
      * @return : HttpStatus
      */
-    @ApiOperation(value = "Delete an user")
+    @Operation(summary = "Delete an user")
     @DeleteMapping(value = "/api/auth/user")
     @PreAuthorize("hasAnyAuthority('RIGHT_ADMIN')")
     public ResponseEntity<HttpStatus> deleteUser(CurrentUser user, @RequestParam Integer id) throws UserBadRequestException {
@@ -95,7 +95,7 @@ public class UserController {
      *
      * @return : UserDto
      */
-    @ApiOperation(value = "Update an user")
+    @Operation(summary = "Update an user")
     @PutMapping(value = "/api/auth/user")
     public ResponseEntity<UserDto> updateUser(CurrentUser user, @RequestBody UserDto userDto) throws UserBadRequestException, UserNotFoundException {
         if(!UserUtil.checkUserInput(userDto))

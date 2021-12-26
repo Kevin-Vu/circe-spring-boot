@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <properties>
+
+        <!-- Log location (don't put a dash at the end) -->
+        <property name="filepath">/circe</property>
+
+        <property name="filename">circe.log</property>
+
+        <!-- Logging output pattern -->
+        <property name="pattern">%d{yyyy-MM-dd HH:mm:ss} %5p %pid --- [%t] %c : %msg%n%throwable</property>
+
+        <!-- Time frame for rollover folders; Possible values [yyyy-ww (week) | yyyy-MM-dd (day) | yyyy-MM (month)] -->
+        <property name="rolloverunit">yyyy-ww</property>
+
+    </properties>
+
+    <Appenders>
+
+        <!-- Console logger -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>${pattern}</Pattern>
+            </PatternLayout>
+        </Console>
+
+        <!-- File rotation logger -->
+        <RollingFile name="RollingFile" fileName="${filepath}/${filename}"
+                     filePattern="${filepath}/archives/$${date:${rolloverunit}}/circe/logs-%d{yyyy-MM-dd}.log.zip">
+            <PatternLayout>
+                <Pattern>${pattern}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- Log rotation everyday -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <!-- Maximum number of rollover files (1 year) -->
+            <DefaultRolloverStrategy max="365"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <root level="info">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFile" level="warn"/>
+        </root>
+
+    </Loggers>
+
+</Configuration>
