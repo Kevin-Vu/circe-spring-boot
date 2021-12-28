@@ -45,7 +45,7 @@ public class TestUserController extends BaseTest {
     public void before() {
 
         JacksonTester.initFields(this, new ObjectMapper());
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
 
