@@ -27,6 +27,7 @@
 		<springdoc-openapi-ui.version>1.6.2</springdoc-openapi-ui.version>
 
 		<testcontainers.version>1.16.2</testcontainers.version>
+		<postgresql.version>42.4.1</postgresql.version>
 		<postgresql.version>42.3.3</postgresql.version>
 		<liquibase-core.version>4.8.0</liquibase-core.version>
 
