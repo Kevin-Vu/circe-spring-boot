@@ -7,7 +7,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -40,6 +40,7 @@ public class ProductTypeEntity implements Serializable {
     private Timestamp expirationDate;
 
     @OneToMany(mappedBy = "productType", fetch = FetchType.LAZY)
+    @Builder.Default
     private List<DesignationCatalogEntity> designationCatalogList = new ArrayList<>();
 
     @Column(name = "pdt_created_by")

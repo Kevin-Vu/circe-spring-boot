@@ -7,7 +7,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -51,6 +51,7 @@ public class InvoiceEntity implements Serializable {
     private CustomerEntity customer;
 
     @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
     private List<DesignationEntity> designations = new ArrayList<>();
 
     @Column(name = "ivc_created_by")

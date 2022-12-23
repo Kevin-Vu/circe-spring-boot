@@ -20,6 +20,7 @@ public class InvoiceDto {
     private Float totalTaxes;
     private Float totalNoTaxes;
     private Float totalWithTaxes;
+    @Builder.Default
     private List<DesignationDto> designations = new ArrayList<>();
 
 

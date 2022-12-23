@@ -1,6 +1,6 @@
 [comment]: <> "[![CircleCI](https://circleci.com/gh/Kevin-Vu/okayo-facture.svg?style=svg)](https://circleci.com/gh/Kevin-Vu/okayo-facture)"  
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/652838ec809046299d53bb617ca74753)](https://www.codacy.com/gh/Kevin-Vu/circe-spring-boot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Kevin-Vu/circe-spring-boot&amp;utm_campaign=Badge_Grade)
-![Version](https://img.shields.io/badge/version-4.0.1-blue)
+![Version](https://img.shields.io/badge/version-5.0.0-blue)
 # Circe-Spring-Boot
 
 Manage your clients and their invoices.

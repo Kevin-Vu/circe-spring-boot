@@ -2,7 +2,7 @@ package com.circe.invoice.security.jwt;
 
 import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @Getter
 public class JwtLoginRequest {
