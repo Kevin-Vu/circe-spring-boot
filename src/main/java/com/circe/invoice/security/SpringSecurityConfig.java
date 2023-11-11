@@ -3,6 +3,8 @@ package com.circe.invoice.security;
 import com.circe.invoice.security.jwt.AuthEntryPointJwt;
 import com.circe.invoice.security.jwt.AuthTokenFilter;
 import jakarta.annotation.Resource;
+import java.util.Arrays;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,174 +34,173 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SpringSecurityConfig {
 
-    @Resource(name = "userDetailsService")
-    private UserDetailsService userDetailsService;
+  private final AuthEntryPointJwt authEntryPointJwt;
 
-    @Autowired
-    private AuthEntryPointJwt authEntryPointJwt;
+  @Resource(name = "userDetailsService")
+  private UserDetailsService userDetailsService;
 
-    @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter(){
-        return new AuthTokenFilter();
-    }
+  @Autowired
+  public SpringSecurityConfig(AuthEntryPointJwt authEntryPointJwt) {
+    this.authEntryPointJwt = authEntryPointJwt;
+  }
 
-    @Bean(name = "passwordEncoder")
-    public static PasswordEncoder passwordencoder(){
-        return new BCryptPasswordEncoder();
-    }
+  @Bean(name = "passwordEncoder")
+  public static PasswordEncoder passwordencoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordencoder());
-        return daoAuthenticationProvider;
-    }
+  @Bean
+  public AuthTokenFilter authenticationJwtTokenFilter() {
+    return new AuthTokenFilter();
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordencoder())
-                .and()
-                .build();
-    }
+  @Bean
+  public DaoAuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+    daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+    daoAuthenticationProvider.setPasswordEncoder(passwordencoder());
+    return daoAuthenticationProvider;
+  }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.expressionHandler(new DefaultWebSecurityExpressionHandler() {
-            @Override
-            protected SecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication, FilterInvocation fi) {
-                WebSecurityExpressionRoot root = (WebSecurityExpressionRoot) super.createSecurityExpressionRoot(authentication, fi);
+  @Bean
+  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    AuthenticationManagerBuilder authenticationManagerBuilder =
+        http.getSharedObject(AuthenticationManagerBuilder.class);
+    authenticationManagerBuilder
+        .userDetailsService(userDetailsService)
+        .passwordEncoder(passwordencoder());
+    return authenticationManagerBuilder.build();
+  }
+
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return (web) ->
+        web.expressionHandler(
+            new DefaultWebSecurityExpressionHandler() {
+              @Override
+              protected SecurityExpressionOperations createSecurityExpressionRoot(
+                  Authentication authentication, FilterInvocation fi) {
+                WebSecurityExpressionRoot root =
+                    (WebSecurityExpressionRoot)
+                        super.createSecurityExpressionRoot(authentication, fi);
                 root.setDefaultRolePrefix("RIGHT_");
                 return root;
-            }
-        });
-    }
+              }
+            });
+  }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
-        corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
-        corsConfiguration.setAllowedMethods(Arrays.asList(
-                RequestMethod.POST.name(),
-                RequestMethod.PATCH.name(),
-                RequestMethod.PUT.name(),
-                RequestMethod.DELETE.name(),
-                RequestMethod.GET.name(),
-                RequestMethod.OPTIONS.name(),
-                RequestMethod.TRACE.name(),
-                RequestMethod.HEAD.name()
-        ));
+    corsConfiguration.setAllowCredentials(true);
+    corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+    corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
+    corsConfiguration.setAllowedMethods(
+        Arrays.asList(
+            RequestMethod.POST.name(),
+            RequestMethod.PATCH.name(),
+            RequestMethod.PUT.name(),
+            RequestMethod.DELETE.name(),
+            RequestMethod.GET.name(),
+            RequestMethod.OPTIONS.name(),
+            RequestMethod.TRACE.name(),
+            RequestMethod.HEAD.name()));
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-        return source;
-    }
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", corsConfiguration);
+    return source;
+  }
 
-    @Bean
-    public HttpSessionEventPublisher httpSessionEventPublisher(){
-        return new HttpSessionEventPublisher();
-    }
+  @Bean
+  public HttpSessionEventPublisher httpSessionEventPublisher() {
+    return new HttpSessionEventPublisher();
+  }
 
-    @Bean
-    public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf()
-                .disable()
-                .cors()
-                .and()
-                    .exceptionHandling().authenticationEntryPoint(authEntryPointJwt)
-                .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+  @Bean
+  public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity
+        .csrf(AbstractHttpConfigurer::disable)
+        .exceptionHandling(e -> e.authenticationEntryPoint(authEntryPointJwt))
+        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").authenticated())
+        .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        .addFilterBefore(
+            authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        httpSecurity.headers().frameOptions().disable();
+    return httpSecurity.build();
+  }
 
-        httpSecurity.authorizeHttpRequests()
-                .and()
-                    .authorizeHttpRequests()
-                    .requestMatchers("/api/auth/**")
-                    .authenticated()
-                .and()
-                    .authorizeHttpRequests()
-                    .anyRequest()
-                    .permitAll();
+  // JSESSION ID EXAMPLE
+  //    @Override
+  //    protected void configure(HttpSecurity httpSecurity) throws Exception {
+  //
+  //        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+  //        httpSecurity.sessionManagement().sessionFixation().migrateSession();
+  //
+  //        httpSecurity
+  //                .csrf()
+  //                    .disable()
+  //                .cors()
+  //                .and()
+  //                    .formLogin()
+  //                    .loginProcessingUrl("/api/login")
+  //                    .successHandler(new AuthentificationLoginSuccessHandler())
+  //                    .failureHandler(new AuthenticationLoginFailureHandler())
+  //                .and()
+  //                    .logout()
+  //                    .logoutUrl("/api/logout")
+  //                    .logoutSuccessHandler(new AuthentificationLogoutSuccessHandler())
+  //                    .invalidateHttpSession(true)
+  //                .and()
+  //                    .authorizeRequests()
+  //                    .antMatchers("/api/auth/admin/**")
+  //                    .hasAuthority(AuthorityEnum.ADMINISTRATOR.getValue())
+  //                .and()
+  //                    .authorizeRequests()
+  //                    .antMatchers("/api/auth/manager/**")
+  //                    .hasAnyAuthority(AuthorityEnum.MANAGER.getValue(),
+  // AuthorityEnum.ADMINISTRATOR.getValue())
+  //                .and()
+  //                    .authorizeRequests()
+  //                    .antMatchers("/api/auth/**")
+  //                    .authenticated()
+  //                .and()
+  //                    .authorizeRequests()
+  //                    .anyRequest()
+  //                    .permitAll();
+  //    }
 
-        httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        return httpSecurity.build();
-    }
-
-
-    // JSESSION ID EXAMPLE
-//    @Override
-//    protected void configure(HttpSecurity httpSecurity) throws Exception {
-//
-//        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-//        httpSecurity.sessionManagement().sessionFixation().migrateSession();
-//
-//        httpSecurity
-//                .csrf()
-//                    .disable()
-//                .cors()
-//                .and()
-//                    .formLogin()
-//                    .loginProcessingUrl("/api/login")
-//                    .successHandler(new AuthentificationLoginSuccessHandler())
-//                    .failureHandler(new AuthenticationLoginFailureHandler())
-//                .and()
-//                    .logout()
-//                    .logoutUrl("/api/logout")
-//                    .logoutSuccessHandler(new AuthentificationLogoutSuccessHandler())
-//                    .invalidateHttpSession(true)
-//                .and()
-//                    .authorizeRequests()
-//                    .antMatchers("/api/auth/admin/**")
-//                    .hasAuthority(AuthorityEnum.ADMINISTRATOR.getValue())
-//                .and()
-//                    .authorizeRequests()
-//                    .antMatchers("/api/auth/manager/**")
-//                    .hasAnyAuthority(AuthorityEnum.MANAGER.getValue(), AuthorityEnum.ADMINISTRATOR.getValue())
-//                .and()
-//                    .authorizeRequests()
-//                    .antMatchers("/api/auth/**")
-//                    .authenticated()
-//                .and()
-//                    .authorizeRequests()
-//                    .anyRequest()
-//                    .permitAll();
-//    }
-
-
-//    private static class AuthentificationLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-//        @Override
-//        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-//            response.setStatus(HttpServletResponse.SC_OK);
-//        }
-//    }
-//
-//    private static class AuthenticationLoginFailureHandler extends SimpleUrlAuthenticationFailureHandler{
-//        @Override
-//        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) {
-//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//        }
-//    }
-//
-//    private static class AuthentificationLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
-//        @Override
-//        public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)  {
-//            response.setStatus(HttpServletResponse.SC_OK);
-//        }
-//    }
+  //    private static class AuthentificationLoginSuccessHandler extends
+  // SimpleUrlAuthenticationSuccessHandler {
+  //        @Override
+  //        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse
+  // response, Authentication authentication) {
+  //            response.setStatus(HttpServletResponse.SC_OK);
+  //        }
+  //    }
+  //
+  //    private static class AuthenticationLoginFailureHandler extends
+  // SimpleUrlAuthenticationFailureHandler{
+  //        @Override
+  //        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse
+  // response, AuthenticationException exception) {
+  //            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+  //        }
+  //    }
+  //
+  //    private static class AuthentificationLogoutSuccessHandler extends
+  // SimpleUrlLogoutSuccessHandler {
+  //        @Override
+  //        public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+  // Authentication authentication)  {
+  //            response.setStatus(HttpServletResponse.SC_OK);
+  //        }
+  //    }
 
 }

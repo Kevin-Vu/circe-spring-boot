@@ -1,26 +1,28 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="usr_001_add_admin_user" author="kvu">
-        <insert tableName="r_user">
-            <column name="usr_id" valueSequenceNext="user_sequence"/>
-            <column name="usr_firstname" value="admin"/>
-            <column name="usr_lastname" value="admin"/>
-            <column name="usr_user_code" value="admin"/>
-            <column name="usr_email" value="admin@circe.live"/>
-            <column name="usr_password" value="$2a$10$pQ6Jm4iByE/53ps8/QMgae4989C5yCbHshPLYdiqgmF301GLPmIx6"/>
-            <column name="usr_lang_code" value="FR"/>
-            <column name="usr_ptr_ath_id" valueComputed="(SELECT ath_id from r_authority WHERE ath_name = 'admin')"/>
-            <column name="usr_pwd_expiration_date" value="2100-01-01 00:00:00"/>
-            <column name="usr_pwd_access_start" value="2000-01-01 00:00:00"/>
-            <column name="usr_pwd_access_end" value="2100-01-01 00:00:00"/>
-            <column name="usr_pwd_last_change_date" value="2000-01-01 00:00:00"/>
-            <column name="usr_created_by" value="kvu"/>
-            <column name="usr_created_date" value="now()"/>
-            <column name="usr_last_modified_by" value="kvu"/>
-            <column name="usr_last_modified_date" value="now()"/>
-        </insert>
-    </changeSet>
+  <changeSet author="kvu" id="usr_001_add_admin_user">
+    <insert tableName="r_user">
+      <column name="usr_id" valueSequenceNext="user_sequence"/>
+      <column name="usr_firstname" value="admin"/>
+      <column name="usr_lastname" value="admin"/>
+      <column name="usr_user_code" value="admin"/>
+      <column name="usr_email" value="admin@circe.live"/>
+      <column name="usr_password"
+        value="$2a$10$Eb5BC15wrjKZmhe8CEZ37Ooe5/R.sIA/ANFTfQlS981i1AvirTz1q"/> <!-- admin-->
+      <column name="usr_lang_code" value="FR"/>
+      <column name="usr_ptr_ath_id"
+        valueComputed="(SELECT ath_id from r_authority WHERE ath_name = 'admin')"/>
+      <column name="usr_pwd_expiration_date" value="2100-01-01 00:00:00"/>
+      <column name="usr_pwd_access_start" value="2000-01-01 00:00:00"/>
+      <column name="usr_pwd_access_end" value="2100-01-01 00:00:00"/>
+      <column name="usr_pwd_last_change_date" value="2000-01-01 00:00:00"/>
+      <column name="usr_created_by" value="kvu"/>
+      <column name="usr_created_date" value="now()"/>
+      <column name="usr_last_modified_by" value="kvu"/>
+      <column name="usr_last_modified_date" value="now()"/>
+    </insert>
+  </changeSet>
 
 </databaseChangeLog>

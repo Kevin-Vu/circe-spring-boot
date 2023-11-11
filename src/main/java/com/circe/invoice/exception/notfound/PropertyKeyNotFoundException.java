@@ -5,10 +5,10 @@ import org.apache.logging.log4j.Logger;
 
 public class PropertyKeyNotFoundException extends Exception {
 
-    private static final Logger log = LogManager.getLogger();
+  private static final Logger log = LogManager.getLogger();
 
-    public PropertyKeyNotFoundException(String message) {
-        super(message);
-        log.error("[PROPERTIES] - {}", message);
-    }
+  public PropertyKeyNotFoundException(String message) {
+    super(message);
+    log.error("[PROPERTIES] - {}", message);
+  }
 }

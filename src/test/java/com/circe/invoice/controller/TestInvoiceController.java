@@ -16,11 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ContextConfiguration(initializers = BaseTest.Initializer.class)
 public class TestInvoiceController extends BaseTest {
 
-
-    @Test
-    public void empty() {
-
-    }
-
-
+  @Test
+  public void empty() {}
 }
