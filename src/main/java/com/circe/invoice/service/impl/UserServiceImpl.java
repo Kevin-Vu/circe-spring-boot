@@ -14,7 +14,7 @@ import com.circe.invoice.util.BCryptManagerUtil;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,15 +22,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service("userDetailsService")
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-  @Autowired private AuthorityRepository authorityRepository;
-
-  @Autowired private UserRepository userRepository;
-
-  @Autowired private BCryptManagerUtil bCryptManagerUtil;
-
-  @Autowired private UserMapper userMapper;
+  private final AuthorityRepository authorityRepository;
+  private final UserRepository userRepository;
+  private final BCryptManagerUtil bCryptManagerUtil;
+  private final UserMapper userMapper;
 
   /**
    * Implement a custom Principal for Spring Security, in CurrentUser we have the id of the user and
@@ -68,7 +66,6 @@ public class UserServiceImpl implements UserService {
    *
    * @param userCode : user code
    * @return : UserEntity
-   * @throws UserNotFoundException
    */
   @Override
   public UserDto loadUserByCode(String userCode) throws UserNotFoundException {
@@ -82,7 +79,6 @@ public class UserServiceImpl implements UserService {
    *
    * @param id : id
    * @return : UserEntity
-   * @throws UserNotFoundException
    */
   @Override
   public UserDto loadUserById(Integer id) throws UserNotFoundException {
@@ -93,7 +89,7 @@ public class UserServiceImpl implements UserService {
   }
 
   /**
-   * Create an user
+   * Create a user
    *
    * @param createUserDto : CreateUserDto
    * @return : UserDto
@@ -126,7 +122,7 @@ public class UserServiceImpl implements UserService {
   }
 
   /**
-   * Delete an user by its id
+   * Delete a user by its id
    *
    * @param id : user id
    */

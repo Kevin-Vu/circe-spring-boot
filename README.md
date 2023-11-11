@@ -29,11 +29,12 @@ $ mvn spring-boot:run
 
 ## Access to api documentation
 
-Once the app is running go to `http://localhost:8000/swagger-ui.html`
+Once the app is running go to `http://localhost:8000/swagger-ui.html`  
+Credentials : `admin:admin`
 
 ## Database
 
-<img src="diagram.png" width="750">
+<img src="diagram.png" width="750" alt="database">
 
 ## Front-End
 

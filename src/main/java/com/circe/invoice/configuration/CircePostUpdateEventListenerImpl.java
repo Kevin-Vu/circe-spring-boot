@@ -14,8 +14,7 @@ public class CircePostUpdateEventListenerImpl extends EnversPostUpdateEventListe
 
   @Override
   public void onPostUpdate(PostUpdateEvent event) {
-    if (event.getEntity() instanceof CustomerEntity) {
-      CustomerEntity customer = (CustomerEntity) event.getEntity();
+    if (event.getEntity() instanceof CustomerEntity customer) {
       if (!StringUtils.isEmpty(customer.getAddress())) super.onPostUpdate(event);
     } else super.onPostUpdate(event);
   }

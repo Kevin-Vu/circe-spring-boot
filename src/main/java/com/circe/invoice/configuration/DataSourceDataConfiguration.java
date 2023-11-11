@@ -30,7 +30,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     transactionManagerRef = "transactionManagerData")
 public class DataSourceDataConfiguration {
 
-  @Autowired private CirceConfiguration configuration;
+  private final CirceConfiguration configuration;
+
+  @Autowired
+  public DataSourceDataConfiguration(CirceConfiguration configuration) {
+    this.configuration = configuration;
+  }
 
   @Bean(name = "dataSourceData")
   @ConfigurationProperties(prefix = "spring.datasource.data")

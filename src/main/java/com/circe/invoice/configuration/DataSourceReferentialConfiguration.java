@@ -35,7 +35,6 @@ public class DataSourceReferentialConfiguration {
 
   @Autowired
   public DataSourceReferentialConfiguration(CirceConfiguration configuration) {
-
     this.configuration = configuration;
   }
 

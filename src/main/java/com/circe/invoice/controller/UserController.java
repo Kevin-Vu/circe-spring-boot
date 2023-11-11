@@ -8,17 +8,18 @@ import com.circe.invoice.security.CurrentUser;
 import com.circe.invoice.service.UserService;
 import com.circe.invoice.util.UserUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
-  @Autowired private UserService userService;
+  private final UserService userService;
 
   /**
    * Create an UserEntity in database from a CreateUserDto
@@ -33,21 +34,6 @@ public class UserController {
       CurrentUser user, @RequestBody CreateUserDto createUserDto) throws UserBadRequestException {
     if (!UserUtil.checkCreateUserInput(createUserDto))
       throw new UserBadRequestException("CreateUserDto contains bad input");
-    return new ResponseEntity<>(userService.createUser(createUserDto), HttpStatus.OK);
-  }
-
-  @GetMapping(value = "/api/user")
-  public ResponseEntity<UserDto> createddUser() throws UserBadRequestException {
-    CreateUserDto createUserDto =
-        CreateUserDto.builder()
-            .userCode(RandomStringUtils.randomAlphabetic(10))
-            .password("password")
-            .authority("admin")
-            .email(RandomStringUtils.randomAlphabetic(10) + "kevin.vu@gotde.fr")
-            .firstname("ferf")
-            .lastname("eef")
-            .langCode("FR")
-            .build();
     return new ResponseEntity<>(userService.createUser(createUserDto), HttpStatus.OK);
   }
 
