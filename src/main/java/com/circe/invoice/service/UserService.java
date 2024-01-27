@@ -7,9 +7,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
 
-    UserDto loadUserByCode(String userCode) throws UserNotFoundException;
-    UserDto loadUserById(Integer id) throws UserNotFoundException;
-    UserDto createUser(CreateUserDto clientDto);
-    UserDto updateUser(UserDto userDto) throws UserNotFoundException;
-    void deleteUser(Integer id);
+  UserDto loadUserByCode(String userCode) throws UserNotFoundException;
+
+  UserDto loadUserById(Integer id) throws UserNotFoundException;
+
+  UserDto createUser(CreateUserDto clientDto);
+
+  UserDto updateUser(UserDto userDto) throws UserNotFoundException;
+
+  void deleteUser(Integer id);
 }

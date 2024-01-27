@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class CirceConfiguration {
 
-    @Value("${liquibase.data.enabled}")
-    private boolean isLiquibaseDataEnabled;
+  @Value("${liquibase.data.enabled}")
+  private boolean isLiquibaseDataEnabled;
 
-    @Value("${liquibase.referential.enabled}")
-    private boolean isLiquibaseReferentialEnabled;
+  @Value("${liquibase.referential.enabled}")
+  private boolean isLiquibaseReferentialEnabled;
 }

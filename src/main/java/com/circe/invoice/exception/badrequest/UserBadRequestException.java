@@ -5,10 +5,10 @@ import org.apache.logging.log4j.Logger;
 
 public class UserBadRequestException extends Exception {
 
-    private static final Logger log = LogManager.getLogger();
+  private static final Logger log = LogManager.getLogger();
 
-    public UserBadRequestException(String message) {
-        super(message);
-        log.error("[INCORRECT-INPUT] - {}", message);
-    }
+  public UserBadRequestException(String message) {
+    super(message);
+    log.error("[INCORRECT-INPUT] - {}", message);
+  }
 }

@@ -9,12 +9,11 @@ import lombok.*;
 @NoArgsConstructor
 public class CreateUserDto {
 
-    private String firstname;
-    private String lastname;
-    private String userCode;
-    private String email;
-    private String password;
-    private String authority;
-    private String langCode;
-
+  private String firstname;
+  private String lastname;
+  private String userCode;
+  private String email;
+  private String password;
+  private String authority;
+  private String langCode;
 }

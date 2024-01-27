@@ -1,106 +1,113 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="s001_01_creation_authority" author="kvu">
-        <createTable tableName="r_authority" >
-            <column name="ath_id" type="INT" defaultValueComputed="nextval('authority_sequence')">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="ath_name" type="VARCHAR(40)"/>
-            <column name="ath_created_by" type="VARCHAR(60)"/>
-            <column name="ath_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="ath_last_modified_by" type="VARCHAR(60)"/>
-            <column name="ath_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-        </createTable>
-    </changeSet>
+  <changeSet author="kvu" id="s001_01_creation_authority">
+    <createTable tableName="r_authority">
+      <column defaultValueComputed="nextval('authority_sequence')" name="ath_id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="ath_name" type="VARCHAR(40)"/>
+      <column name="ath_created_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="ath_created_date" type="TIMESTAMP"/>
+      <column name="ath_last_modified_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="ath_last_modified_date"
+        type="TIMESTAMP"/>
+    </createTable>
+  </changeSet>
 
-    <changeSet id="s001_02_creation_right" author="kvu">
-        <createTable tableName="r_right" >
-            <column name="rgt_id" type="INT" defaultValueComputed="nextval('right_sequence')">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="rgt_name" type="VARCHAR(40)"/>
-            <column name="rgt_created_by" type="VARCHAR(60)"/>
-            <column name="rgt_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="rgt_last_modified_by" type="VARCHAR(60)"/>
-            <column name="rgt_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-        </createTable>
-    </changeSet>
+  <changeSet author="kvu" id="s001_02_creation_right">
+    <createTable tableName="r_right">
+      <column defaultValueComputed="nextval('right_sequence')" name="rgt_id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="rgt_name" type="VARCHAR(40)"/>
+      <column name="rgt_created_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="rgt_created_date" type="TIMESTAMP"/>
+      <column name="rgt_last_modified_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="rgt_last_modified_date"
+        type="TIMESTAMP"/>
+    </createTable>
+  </changeSet>
 
-    <changeSet id="s001_03_creation_join_auth_right" author="kvu">
-        <createTable tableName="r_join_authority_right">
-            <column name="jar_ptr_auth_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_ath_id" references="r_authority(ath_id)"/>
-            </column>
-            <column name="jar_ptr_right_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_rgt_id" references="r_right(rgt_id)"/>
-            </column>
-        </createTable>
-    </changeSet>
+  <changeSet author="kvu" id="s001_03_creation_join_auth_right">
+    <createTable tableName="r_join_authority_right">
+      <column name="jar_ptr_auth_id" type="INT">
+        <constraints foreignKeyName="fk_ath_id" nullable="false" references="r_authority(ath_id)"/>
+      </column>
+      <column name="jar_ptr_right_id" type="INT">
+        <constraints foreignKeyName="fk_rgt_id" nullable="false" references="r_right(rgt_id)"/>
+      </column>
+    </createTable>
+  </changeSet>
 
-    <changeSet id="s001_04_creation_user" author="kvu">
-        <createTable tableName="r_user">
-            <column name="usr_id" type="INT" defaultValueComputed="nextval('user_sequence')">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="usr_firstname" type="VARCHAR(60)"/>
-            <column name="usr_lastname" type="VARCHAR(60)"/>
-            <column name="usr_user_code" type="VARCHAR(60)"/>
-            <column name="usr_email" type="VARCHAR(60)"/>
-            <column name="usr_password" type="VARCHAR(60)"/>
-            <column name="usr_lang_code" type="VARCHAR(20)"/>
-            <column name="usr_ptr_ath_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_ath_id" references="r_authority(ath_id)"/>
-            </column>
-            <column name="usr_pwd_expiration_date" type="TIMESTAMP"/>
-            <column name="usr_pwd_access_start" type="TIMESTAMP"/>
-            <column name="usr_pwd_access_end" type="TIMESTAMP"/>
-            <column name="usr_pwd_last_change_date" type="TIMESTAMP"/>
-            <column name="usr_created_by" type="VARCHAR(60)"/>
-            <column name="usr_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="usr_last_modified_by" type="VARCHAR(60)"/>
-            <column name="usr_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-        </createTable>
-    </changeSet>
+  <changeSet author="kvu" id="s001_04_creation_user">
+    <createTable tableName="r_user">
+      <column defaultValueComputed="nextval('user_sequence')" name="usr_id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="usr_firstname" type="VARCHAR(60)"/>
+      <column name="usr_lastname" type="VARCHAR(60)"/>
+      <column name="usr_user_code" type="VARCHAR(60)"/>
+      <column name="usr_email" type="VARCHAR(60)"/>
+      <column name="usr_password" type="CLOB"/>
+      <column name="usr_lang_code" type="VARCHAR(20)"/>
+      <column name="usr_ptr_ath_id" type="INT">
+        <constraints foreignKeyName="fk_ath_id" nullable="false" references="r_authority(ath_id)"/>
+      </column>
+      <column name="usr_pwd_expiration_date" type="TIMESTAMP"/>
+      <column name="usr_pwd_access_start" type="TIMESTAMP"/>
+      <column name="usr_pwd_access_end" type="TIMESTAMP"/>
+      <column name="usr_pwd_last_change_date" type="TIMESTAMP"/>
+      <column name="usr_created_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="usr_created_date" type="TIMESTAMP"/>
+      <column name="usr_last_modified_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="usr_last_modified_date"
+        type="TIMESTAMP"/>
+    </createTable>
+  </changeSet>
 
-    <changeSet id="s001_05_creation_product_type" author="kvu">
-        <createTable tableName="r_product_type" >
-            <column name="pdt_id" type="INT" defaultValueComputed="nextval('product_type_sequence')">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="pdt_product_type" type="VARCHAR(40)"/>
-            <column name="pdt_amount" type="FLOAT"/>
-            <column name="pdt_expiration_date" type="TIMESTAMP"/>
-            <column name="pdt_created_by" type="VARCHAR(60)"/>
-            <column name="pdt_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="pdt_last_modified_by" type="VARCHAR(60)"/>
-            <column name="pdt_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-        </createTable>
-    </changeSet>
+  <changeSet author="kvu" id="s001_05_creation_product_type">
+    <createTable tableName="r_product_type">
+      <column defaultValueComputed="nextval('product_type_sequence')" name="pdt_id" type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="pdt_product_type" type="VARCHAR(40)"/>
+      <column name="pdt_amount" type="FLOAT"/>
+      <column name="pdt_expiration_date" type="TIMESTAMP"/>
+      <column name="pdt_created_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="pdt_created_date" type="TIMESTAMP"/>
+      <column name="pdt_last_modified_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="pdt_last_modified_date"
+        type="TIMESTAMP"/>
+    </createTable>
+  </changeSet>
 
-    <changeSet id="s001_06_creation_designation_catalog" author="kvu">
-        <createTable tableName="r_designation_catalog">
-            <column name="dec_id" type="INT" defaultValueComputed="nextval('designation_catalog_sequence')">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="dec_name" type="VARCHAR(60)"/>
-            <column name="dec_price_no_taxes" type="FLOAT"/>
-            <column name="dec_ptr_pdt_id" type="INT">
-                <constraints nullable="false" foreignKeyName="fk_pdt_id" references="r_product_type(pdt_id)"/>
-            </column>
-            <column name="dec_created_by" type="VARCHAR(60)"/>
-            <column name="dec_created_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="dec_last_modified_by" type="VARCHAR(60)"/>
-            <column name="dec_last_modified_date" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-        </createTable>
-    </changeSet>
+  <changeSet author="kvu" id="s001_06_creation_designation_catalog">
+    <createTable tableName="r_designation_catalog">
+      <column defaultValueComputed="nextval('designation_catalog_sequence')" name="dec_id"
+        type="INT">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="dec_name" type="VARCHAR(60)"/>
+      <column name="dec_price_no_taxes" type="FLOAT"/>
+      <column name="dec_ptr_pdt_id" type="INT">
+        <constraints foreignKeyName="fk_pdt_id" nullable="false"
+          references="r_product_type(pdt_id)"/>
+      </column>
+      <column name="dec_created_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="dec_created_date" type="TIMESTAMP"/>
+      <column name="dec_last_modified_by" type="VARCHAR(60)"/>
+      <column defaultValueComputed="CURRENT_TIMESTAMP" name="dec_last_modified_date"
+        type="TIMESTAMP"/>
+    </createTable>
+  </changeSet>
 
-    <changeSet id="s001_10_unique_email_code" author="kvu">
-        <addUniqueConstraint
-                columnNames="usr_email, usr_user_code"
-                constraintName="unique_email_code"
-                tableName="r_user"/>
-    </changeSet>
+  <changeSet author="kvu" id="s001_10_unique_email_code">
+    <addUniqueConstraint
+      columnNames="usr_email, usr_user_code"
+      constraintName="unique_email_code"
+      tableName="r_user"/>
+  </changeSet>
 
 </databaseChangeLog>

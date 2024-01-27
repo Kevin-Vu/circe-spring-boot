@@ -6,11 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "Circe API", version = "2.0", description = "Circe api information"))
+@OpenAPIDefinition(
+    info = @Info(title = "Circe API", version = "2.0", description = "Circe api information"))
 public class Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 }

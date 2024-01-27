@@ -1,16 +1,25 @@
 --
--- PostgreSQL database dump
+-- postgrestestQL database dump
 --
 
 -- Dumped from database version 12.5 (Ubuntu 12.5-1.pgdg18.04+1)
 -- Dumped by pg_dump version 13.1 (Ubuntu 13.1-1.pgdg18.04+1)
 
 --
--- Name: authority_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: authority_sequence; Type: SEQUENCE; Schema: public; Owner: postgrestest
 --
 DROP SCHEMA PUBLIC CASCADE;
 CREATE SCHEMA public;
-CREATE USER postgres SUPERUSER;
+
+do
+$$
+begin
+  if not exists (select * from pg_user where usename = 'postgrestest') then
+     CREATE USER postgrestest SUPERUSER;
+  end if;
+end
+$$
+;
 
 CREATE SEQUENCE public.authority_sequence
     START WITH 1
@@ -20,10 +29,10 @@ CREATE SEQUENCE public.authority_sequence
     CACHE 1;
 
 
-ALTER TABLE public.authority_sequence OWNER TO postgres;
+ALTER TABLE public.authority_sequence OWNER TO postgrestest;
 
 --
--- Name: databasechangelog; Type: TABLE; Schema: public; Owner: postgres
+-- Name: databasechangelog; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.databasechangelog (
@@ -44,10 +53,10 @@ CREATE TABLE public.databasechangelog (
 );
 
 
-ALTER TABLE public.databasechangelog OWNER TO postgres;
+ALTER TABLE public.databasechangelog OWNER TO postgrestest;
 
 --
--- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: postgres
+-- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.databasechangeloglock (
@@ -58,10 +67,10 @@ CREATE TABLE public.databasechangeloglock (
 );
 
 
-ALTER TABLE public.databasechangeloglock OWNER TO postgres;
+ALTER TABLE public.databasechangeloglock OWNER TO postgrestest;
 
 --
--- Name: designation_catalog_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: designation_catalog_sequence; Type: SEQUENCE; Schema: public; Owner: postgrestest
 --
 
 CREATE SEQUENCE public.designation_catalog_sequence
@@ -72,10 +81,10 @@ CREATE SEQUENCE public.designation_catalog_sequence
     CACHE 1;
 
 
-ALTER TABLE public.designation_catalog_sequence OWNER TO postgres;
+ALTER TABLE public.designation_catalog_sequence OWNER TO postgrestest;
 
 --
--- Name: product_type_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: product_type_sequence; Type: SEQUENCE; Schema: public; Owner: postgrestest
 --
 
 CREATE SEQUENCE public.product_type_sequence
@@ -86,10 +95,10 @@ CREATE SEQUENCE public.product_type_sequence
     CACHE 1;
 
 
-ALTER TABLE public.product_type_sequence OWNER TO postgres;
+ALTER TABLE public.product_type_sequence OWNER TO postgrestest;
 
 --
--- Name: r_authority; Type: TABLE; Schema: public; Owner: postgres
+-- Name: r_authority; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.r_authority (
@@ -102,10 +111,10 @@ CREATE TABLE public.r_authority (
 );
 
 
-ALTER TABLE public.r_authority OWNER TO postgres;
+ALTER TABLE public.r_authority OWNER TO postgrestest;
 
 --
--- Name: r_designation_catalog; Type: TABLE; Schema: public; Owner: postgres
+-- Name: r_designation_catalog; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.r_designation_catalog (
@@ -120,10 +129,10 @@ CREATE TABLE public.r_designation_catalog (
 );
 
 
-ALTER TABLE public.r_designation_catalog OWNER TO postgres;
+ALTER TABLE public.r_designation_catalog OWNER TO postgrestest;
 
 --
--- Name: r_join_authority_right; Type: TABLE; Schema: public; Owner: postgres
+-- Name: r_join_authority_right; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.r_join_authority_right (
@@ -132,10 +141,10 @@ CREATE TABLE public.r_join_authority_right (
 );
 
 
-ALTER TABLE public.r_join_authority_right OWNER TO postgres;
+ALTER TABLE public.r_join_authority_right OWNER TO postgrestest;
 
 --
--- Name: r_product_type; Type: TABLE; Schema: public; Owner: postgres
+-- Name: r_product_type; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.r_product_type (
@@ -150,10 +159,10 @@ CREATE TABLE public.r_product_type (
 );
 
 
-ALTER TABLE public.r_product_type OWNER TO postgres;
+ALTER TABLE public.r_product_type OWNER TO postgrestest;
 
 --
--- Name: right_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: right_sequence; Type: SEQUENCE; Schema: public; Owner: postgrestest
 --
 
 CREATE SEQUENCE public.right_sequence
@@ -164,10 +173,10 @@ CREATE SEQUENCE public.right_sequence
     CACHE 1;
 
 
-ALTER TABLE public.right_sequence OWNER TO postgres;
+ALTER TABLE public.right_sequence OWNER TO postgrestest;
 
 --
--- Name: r_right; Type: TABLE; Schema: public; Owner: postgres
+-- Name: r_right; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.r_right (
@@ -180,10 +189,10 @@ CREATE TABLE public.r_right (
 );
 
 
-ALTER TABLE public.r_right OWNER TO postgres;
+ALTER TABLE public.r_right OWNER TO postgrestest;
 
 --
--- Name: user_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: user_sequence; Type: SEQUENCE; Schema: public; Owner: postgrestest
 --
 
 CREATE SEQUENCE public.user_sequence
@@ -194,10 +203,10 @@ CREATE SEQUENCE public.user_sequence
     CACHE 1;
 
 
-ALTER TABLE public.user_sequence OWNER TO postgres;
+ALTER TABLE public.user_sequence OWNER TO postgrestest;
 
 --
--- Name: r_user; Type: TABLE; Schema: public; Owner: postgres
+-- Name: r_user; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.r_user (
@@ -220,10 +229,10 @@ CREATE TABLE public.r_user (
 );
 
 
-ALTER TABLE public.r_user OWNER TO postgres;
+ALTER TABLE public.r_user OWNER TO postgrestest;
 
 --
--- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: postgrestest
 --
 
 INSERT INTO public.databasechangelog VALUES ('p001_01_add_authority_sequence', 'kvu', 'classpath:/db/changelog/referential/patches/db.referential.changelog-patch-001.xml', '2021-01-02 01:55:05.346188', 1, 'EXECUTED', '8:3af831f51eac6e0b9130851b1b7b97b3', 'createSequence sequenceName=authority_sequence', '', NULL, '3.6.3', NULL, NULL, '9548905211');
@@ -244,89 +253,89 @@ INSERT INTO public.databasechangelog VALUES ('p001_10_unique_email_code', 'kvu',
 
 
 --
--- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: postgrestest
 --
 
 INSERT INTO public.databasechangeloglock VALUES (1, false, NULL, NULL);
 
 
 --
--- Data for Name: r_authority; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: r_authority; Type: TABLE DATA; Schema: public; Owner: postgrestest
 --
 
 INSERT INTO public.r_authority VALUES (1, 'admin', 'kvu', '2021-01-02 16:17:20.601127', 'admin', '2021-01-02 16:17:20.601127');
 
 
 --
--- Data for Name: r_designation_catalog; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: r_designation_catalog; Type: TABLE DATA; Schema: public; Owner: postgrestest
 --
 
 
 
 --
--- Data for Name: r_join_authority_right; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: r_join_authority_right; Type: TABLE DATA; Schema: public; Owner: postgrestest
 --
 
 INSERT INTO public.r_join_authority_right VALUES (1, 1);
 
 
 --
--- Data for Name: r_product_type; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: r_product_type; Type: TABLE DATA; Schema: public; Owner: postgrestest
 --
 
 
 
 --
--- Data for Name: r_right; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: r_right; Type: TABLE DATA; Schema: public; Owner: postgrestest
 --
 
 INSERT INTO public.r_right VALUES (1, 'RIGHT_ADMIN', 'kvu', '2021-01-02 16:17:20.617805', 'admin', '2021-01-02 16:17:20.617805');
 
 
 --
--- Data for Name: r_user; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: r_user; Type: TABLE DATA; Schema: public; Owner: postgrestest
 --
 
 INSERT INTO public.r_user VALUES (1, 'admin', 'admin', 'admin', 'admin@circe.live', '$2a$10$pQ6Jm4iByE/53ps8/QMgae4989C5yCbHshPLYdiqgmF301GLPmIx6', 'FR', 1, '2100-01-01 00:00:00', '2000-01-01 00:00:00', '2100-01-01 00:00:00', '2000-01-01 00:00:00', 'kvu', '2021-01-02 16:24:39.303569', 'kvu', '2021-01-02 16:24:39.303569');
 
 
 --
--- Name: authority_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: authority_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgrestest
 --
 
 SELECT pg_catalog.setval('public.authority_sequence', 1, true);
 
 
 --
--- Name: designation_catalog_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: designation_catalog_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgrestest
 --
 
 SELECT pg_catalog.setval('public.designation_catalog_sequence', 1, false);
 
 
 --
--- Name: product_type_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: product_type_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgrestest
 --
 
 SELECT pg_catalog.setval('public.product_type_sequence', 1, false);
 
 
 --
--- Name: right_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: right_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgrestest
 --
 
 SELECT pg_catalog.setval('public.right_sequence', 2, true);
 
 
 --
--- Name: user_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: user_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgrestest
 --
 
 SELECT pg_catalog.setval('public.user_sequence', 2, false);
 
 
 --
--- Name: databasechangeloglock databasechangeloglock_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: databasechangeloglock databasechangeloglock_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.databasechangeloglock
@@ -334,7 +343,7 @@ ALTER TABLE ONLY public.databasechangeloglock
 
 
 --
--- Name: r_authority r_authority_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_authority r_authority_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_authority
@@ -342,7 +351,7 @@ ALTER TABLE ONLY public.r_authority
 
 
 --
--- Name: r_designation_catalog r_designation_catalog_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_designation_catalog r_designation_catalog_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_designation_catalog
@@ -350,7 +359,7 @@ ALTER TABLE ONLY public.r_designation_catalog
 
 
 --
--- Name: r_product_type r_product_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_product_type r_product_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_product_type
@@ -358,7 +367,7 @@ ALTER TABLE ONLY public.r_product_type
 
 
 --
--- Name: r_right r_right_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_right r_right_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_right
@@ -366,7 +375,7 @@ ALTER TABLE ONLY public.r_right
 
 
 --
--- Name: r_user r_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_user r_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_user
@@ -374,7 +383,7 @@ ALTER TABLE ONLY public.r_user
 
 
 --
--- Name: r_user unique_email_code; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_user unique_email_code; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_user
@@ -382,7 +391,7 @@ ALTER TABLE ONLY public.r_user
 
 
 --
--- Name: r_join_authority_right fk_ath_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_join_authority_right fk_ath_id; Type: FK CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_join_authority_right
@@ -390,7 +399,7 @@ ALTER TABLE ONLY public.r_join_authority_right
 
 
 --
--- Name: r_user fk_ath_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_user fk_ath_id; Type: FK CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_user
@@ -398,7 +407,7 @@ ALTER TABLE ONLY public.r_user
 
 
 --
--- Name: r_designation_catalog fk_pdt_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_designation_catalog fk_pdt_id; Type: FK CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_designation_catalog
@@ -406,7 +415,7 @@ ALTER TABLE ONLY public.r_designation_catalog
 
 
 --
--- Name: r_join_authority_right fk_rgt_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: r_join_authority_right fk_rgt_id; Type: FK CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.r_join_authority_right
@@ -414,6 +423,6 @@ ALTER TABLE ONLY public.r_join_authority_right
 
 
 --
--- PostgreSQL database dump complete
+-- postgrestestQL database dump complete
 --
 

@@ -1,14 +1,16 @@
 package com.circe.invoice.controller;
 
-import com.circe.invoice.configuration.BaseTest;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+import com.circe.invoice.configuration.TestContainers;
 import com.circe.invoice.dto.user.CreateUserDto;
 import com.circe.invoice.dto.user.UserDto;
 import com.circe.invoice.factory.UserFactoryUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,115 +22,109 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import jakarta.transaction.Transactional;
+class TestUserController extends TestContainers {
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
-@RunWith(SpringRunner.class)
-@TestPropertySource(locations = {"classpath:test.properties"})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
-public class TestUserController extends BaseTest {
+  @Autowired
+  private MockMvc mockMvc;
 
 
-    @Autowired
-    private MockMvc mockMvc;
+  private JacksonTester<UserDto> jsonUserDto;
+  private JacksonTester<CreateUserDto> jsonCreateUserDto;
 
-    private JacksonTester<UserDto> jsonUserDto;
-    private JacksonTester<CreateUserDto> jsonCreateUserDto;
+  @BeforeEach
+  public void before() {
 
+    JacksonTester.initFields(this, new ObjectMapper());
+    MockitoAnnotations.openMocks(this);
+  }
 
-    @Before
-    public void before() {
+  /**
+   * Test get user
+   *
+   * @throws Exception
+   */
+  @Test
+  @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
+  void testGetUser() throws Exception {
 
-        JacksonTester.initFields(this, new ObjectMapper());
-        MockitoAnnotations.openMocks(this);
-    }
+    // Given
+    String url = "/api/auth/user";
+    HttpHeaders params = new HttpHeaders();
+    params.add("id", "1");
 
+    // When
+    MockHttpServletResponse response =
+        mockMvc
+            .perform(get(url).params(params).contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse();
 
-    /**
-     * Test get user
-     * @throws Exception
-     */
-    @Test
-    @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
-    public void testGetUser() throws Exception {
+    UserDto userDto = jsonUserDto.parse(response.getContentAsString()).getObject();
 
-        // Given
-        String url = "/api/auth/user";
-        HttpHeaders params = new HttpHeaders();
-        params.add("id", "1");
+    // Then
+    Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
+    Assertions.assertEquals("admin", userDto.getUserCode());
+  }
 
-        // When
-        MockHttpServletResponse response = mockMvc.perform(
-                get(url).params(params)
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
+  /**
+   * Test delete user
+   *
+   * @throws Exception
+   */
+  @Test
+  @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
+  @Transactional
+  void testDeleteUser() throws Exception {
 
-        UserDto userDto = jsonUserDto.parse(response.getContentAsString()).getObject();
+    // Given
+    String url = "/api/auth/user";
+    HttpHeaders params = new HttpHeaders();
+    params.add("id", "1");
 
-        // Then
-        Assert.assertEquals(HttpStatus.OK.value(),response.getStatus());
-        Assert.assertEquals("admin", userDto.getUserCode());
+    // When
+    MockHttpServletResponse response =
+        mockMvc
+            .perform(delete(url).params(params).contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse();
 
-    }
+    // Then
+    Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
+  }
 
-    /**
-     * Test delete user
-     * @throws Exception
-     */
-    @Test
-    @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
-    @Transactional
-    public void testDeleteUser() throws Exception {
+  /**
+   * Test create user with "admin" authority
+   *
+   * @throws Exception
+   */
+  @Test
+  @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
+  @Transactional
+  void testCreateUserAuthority() throws Exception {
 
-        // Given
-        String url = "/api/auth/user";
-        HttpHeaders params = new HttpHeaders();
-        params.add("id", "1");
+    // Given
+    CreateUserDto createUserDto = UserFactoryUtils.generateCreateClientDto();
+    createUserDto.setAuthority("admin");
 
-        // When
-        MockHttpServletResponse response = mockMvc.perform(
-                delete(url).params(params)
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
+    String url = "/api/auth/user";
 
-        // Then
-        Assert.assertEquals(HttpStatus.OK.value(),response.getStatus());
+    // When
+    MockHttpServletResponse response =
+        mockMvc
+            .perform(
+                post(url)
+                    .accept(MediaType.ALL)
+                    .content(jsonCreateUserDto.write(createUserDto).getJson())
+                    .contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse();
 
-    }
+    UserDto userDto = jsonUserDto.parse(response.getContentAsString()).getObject();
 
-    /**
-     * Test create user with "admin" authority
-     * @throws Exception
-     */
-    @Test
-    @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
-    @Transactional
-    public void testCreateUserAuthority() throws Exception {
-
-        // Given
-        CreateUserDto createUserDto = UserFactoryUtils.generateCreateClientDto();
-        createUserDto.setAuthority("admin");
-
-        String url = "/api/auth/user";
-
-        // When
-        MockHttpServletResponse response = mockMvc.perform(
-                post(url).accept(MediaType.ALL).content(jsonCreateUserDto.write(createUserDto).getJson())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
-
-        UserDto userDto = jsonUserDto.parse(response.getContentAsString()).getObject();
-
-        // Then
-        Assert.assertEquals(HttpStatus.OK.value(),response.getStatus());
-        Assert.assertEquals(createUserDto.getUserCode(), userDto.getUserCode());
-
-    }
-
-
+    // Then
+    Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
+    Assertions.assertEquals(createUserDto.getUserCode(), userDto.getUserCode());
+  }
 }

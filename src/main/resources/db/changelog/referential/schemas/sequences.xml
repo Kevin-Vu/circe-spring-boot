@@ -1,25 +1,34 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="seq_001_add_authority_sequence" author="kvu">
-        <createSequence sequenceName="authority_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
+  <changeSet author="kvu" id="seq_001_add_authority_sequence">
+    <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807"
+      minValue="1"
+      sequenceName="authority_sequence" startValue="1"/>
+  </changeSet>
 
-    <changeSet id="seq_02_add_right_sequence" author="kvu">
-        <createSequence sequenceName="right_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
-    
-    <changeSet id="seq_04_add_user_sequence" author="kvu">
-        <createSequence sequenceName="user_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
+  <changeSet author="kvu" id="seq_02_add_right_sequence">
+    <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807"
+      minValue="1"
+      sequenceName="right_sequence" startValue="1"/>
+  </changeSet>
 
-    <changeSet id="seq_05_add_product_type_sequence" author="kvu">
-        <createSequence sequenceName="product_type_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
+  <changeSet author="kvu" id="seq_04_add_user_sequence">
+    <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807"
+      minValue="1"
+      sequenceName="user_sequence" startValue="1"/>
+  </changeSet>
 
-    <changeSet id="seq_06_add_designation_catalog_sequence" author="kvu">
-        <createSequence sequenceName="designation_catalog_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
-    
+  <changeSet author="kvu" id="seq_05_add_product_type_sequence">
+    <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807"
+      minValue="1"
+      sequenceName="product_type_sequence" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="kvu" id="seq_06_add_designation_catalog_sequence">
+    <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807"
+      minValue="1" sequenceName="designation_catalog_sequence" startValue="1"/>
+  </changeSet>
+
 </databaseChangeLog>

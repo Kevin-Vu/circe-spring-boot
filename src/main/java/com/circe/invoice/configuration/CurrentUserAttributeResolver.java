@@ -11,14 +11,18 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class CurrentUserAttributeResolver implements HandlerMethodArgumentResolver {
 
-    @Override
-    public boolean supportsParameter(MethodParameter methodParameter) {
-        return methodParameter.getParameterType().equals(CurrentUser.class);
-    }
+  @Override
+  public boolean supportsParameter(MethodParameter methodParameter) {
+    return methodParameter.getParameterType().equals(CurrentUser.class);
+  }
 
-    @Override
-    public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getPrincipal();
-    }
+  @Override
+  public Object resolveArgument(
+      MethodParameter methodParameter,
+      ModelAndViewContainer modelAndViewContainer,
+      NativeWebRequest nativeWebRequest,
+      WebDataBinderFactory webDataBinderFactory) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return authentication.getPrincipal();
+  }
 }

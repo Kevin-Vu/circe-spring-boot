@@ -1,21 +1,29 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="seq_01_add_company_sequence" author="kvu">
-        <createSequence sequenceName="company_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
+  <changeSet author="kvu" id="seq_01_add_company_sequence">
+    <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807"
+      minValue="1"
+      sequenceName="company_sequence" startValue="1"/>
+  </changeSet>
 
-    <changeSet id="seq_02_add_customer_sequence" author="kvu">
-        <createSequence sequenceName="customer_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
+  <changeSet author="kvu" id="seq_02_add_customer_sequence">
+    <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807"
+      minValue="1"
+      sequenceName="customer_sequence" startValue="1"/>
+  </changeSet>
 
-    <changeSet id="seq_03_add_invoice_sequence" author="kvu">
-        <createSequence sequenceName="invoice_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
-    
-    <changeSet id="seq_04_add_designation_sequence" author="kvu">
-        <createSequence sequenceName="designation_sequence" cycle="false" minValue="1" maxValue="9223372036854775807" startValue="1" incrementBy="1"/>
-    </changeSet>
+  <changeSet author="kvu" id="seq_03_add_invoice_sequence">
+    <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807"
+      minValue="1"
+      sequenceName="invoice_sequence" startValue="1"/>
+  </changeSet>
+
+  <changeSet author="kvu" id="seq_04_add_designation_sequence">
+    <createSequence cycle="false" incrementBy="1" maxValue="9223372036854775807"
+      minValue="1"
+      sequenceName="designation_sequence" startValue="1"/>
+  </changeSet>
 
 </databaseChangeLog>
