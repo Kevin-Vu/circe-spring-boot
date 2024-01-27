@@ -40,23 +40,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SpringSecurityConfig {
 
   private final AuthEntryPointJwt authEntryPointJwt;
+  private final AuthTokenFilter authTokenFilter;
 
   @Resource(name = "userDetailsService")
   private UserDetailsService userDetailsService;
 
   @Autowired
-  public SpringSecurityConfig(AuthEntryPointJwt authEntryPointJwt) {
+  public SpringSecurityConfig(AuthEntryPointJwt authEntryPointJwt, AuthTokenFilter authTokenFilter) {
     this.authEntryPointJwt = authEntryPointJwt;
+    this.authTokenFilter = authTokenFilter;
   }
 
   @Bean(name = "passwordEncoder")
   public static PasswordEncoder passwordencoder() {
     return new BCryptPasswordEncoder();
-  }
-
-  @Bean
-  public AuthTokenFilter authenticationJwtTokenFilter() {
-    return new AuthTokenFilter();
   }
 
   @Bean
@@ -130,8 +127,7 @@ public class SpringSecurityConfig {
         .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
         .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").authenticated())
         .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-        .addFilterBefore(
-            authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     return httpSecurity.build();
   }

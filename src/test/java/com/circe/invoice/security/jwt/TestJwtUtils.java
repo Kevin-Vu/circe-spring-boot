@@ -7,7 +7,7 @@ import java.util.Date;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class TestJwtUtils {
+class TestJwtUtils {
 
   @Test
   void toto() {

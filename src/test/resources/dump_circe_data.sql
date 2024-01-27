@@ -1,5 +1,5 @@
 --
--- PostgreSQL database dump
+-- postgrestestQL database dump
 --
 
 -- Dumped from database version 12.5 (Ubuntu 12.5-1.pgdg18.04+1)
@@ -18,9 +18,18 @@
 
 DROP SCHEMA PUBLIC CASCADE;
 CREATE SCHEMA public;
-CREATE USER postgres SUPERUSER;
+
+do
+$$
+begin
+  if not exists (select * from pg_user where usename = 'postgrestest') then
+     CREATE USER postgrestest SUPERUSER;
+  end if;
+end
+$$
+;
 --
--- Name: company_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: company_sequence; Type: SEQUENCE; Schema: public; Owner: postgrestest
 --
 
 CREATE SEQUENCE public.company_sequence
@@ -31,10 +40,10 @@ CREATE SEQUENCE public.company_sequence
     CACHE 1;
 
 
-ALTER TABLE public.company_sequence OWNER TO postgres;
+ALTER TABLE public.company_sequence OWNER TO postgrestest;
 
 --
--- Name: customer_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: customer_sequence; Type: SEQUENCE; Schema: public; Owner: postgrestest
 --
 
 CREATE SEQUENCE public.customer_sequence
@@ -45,11 +54,11 @@ CREATE SEQUENCE public.customer_sequence
     CACHE 1;
 
 
-ALTER TABLE public.customer_sequence OWNER TO postgres;
+ALTER TABLE public.customer_sequence OWNER TO postgrestest;
 
 
 --
--- Name: d_company; Type: TABLE; Schema: public; Owner: postgres
+-- Name: d_company; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.d_company (
@@ -65,10 +74,10 @@ CREATE TABLE public.d_company (
 );
 
 
-ALTER TABLE public.d_company OWNER TO postgres;
+ALTER TABLE public.d_company OWNER TO postgrestest;
 
 --
--- Name: d_customer; Type: TABLE; Schema: public; Owner: postgres
+-- Name: d_customer; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.d_customer (
@@ -88,10 +97,10 @@ CREATE TABLE public.d_customer (
 );
 
 
-ALTER TABLE public.d_customer OWNER TO postgres;
+ALTER TABLE public.d_customer OWNER TO postgrestest;
 
 --
--- Name: designation_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: designation_sequence; Type: SEQUENCE; Schema: public; Owner: postgrestest
 --
 
 CREATE SEQUENCE public.designation_sequence
@@ -102,10 +111,10 @@ CREATE SEQUENCE public.designation_sequence
     CACHE 1;
 
 
-ALTER TABLE public.designation_sequence OWNER TO postgres;
+ALTER TABLE public.designation_sequence OWNER TO postgrestest;
 
 --
--- Name: d_designation; Type: TABLE; Schema: public; Owner: postgres
+-- Name: d_designation; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.d_designation (
@@ -126,10 +135,10 @@ CREATE TABLE public.d_designation (
 );
 
 
-ALTER TABLE public.d_designation OWNER TO postgres;
+ALTER TABLE public.d_designation OWNER TO postgrestest;
 
 --
--- Name: invoice_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: invoice_sequence; Type: SEQUENCE; Schema: public; Owner: postgrestest
 --
 
 CREATE SEQUENCE public.invoice_sequence
@@ -140,10 +149,10 @@ CREATE SEQUENCE public.invoice_sequence
     CACHE 1;
 
 
-ALTER TABLE public.invoice_sequence OWNER TO postgres;
+ALTER TABLE public.invoice_sequence OWNER TO postgrestest;
 
 --
--- Name: d_invoice; Type: TABLE; Schema: public; Owner: postgres
+-- Name: d_invoice; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.d_invoice (
@@ -161,10 +170,10 @@ CREATE TABLE public.d_invoice (
 );
 
 
-ALTER TABLE public.d_invoice OWNER TO postgres;
+ALTER TABLE public.d_invoice OWNER TO postgrestest;
 
 --
--- Name: databasechangelog; Type: TABLE; Schema: public; Owner: postgres
+-- Name: databasechangelog; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.databasechangelog (
@@ -185,10 +194,10 @@ CREATE TABLE public.databasechangelog (
 );
 
 
-ALTER TABLE public.databasechangelog OWNER TO postgres;
+ALTER TABLE public.databasechangelog OWNER TO postgrestest;
 
 --
--- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: postgres
+-- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: postgrestest
 --
 
 CREATE TABLE public.databasechangeloglock (
@@ -199,10 +208,10 @@ CREATE TABLE public.databasechangeloglock (
 );
 
 
-ALTER TABLE public.databasechangeloglock OWNER TO postgres;
+ALTER TABLE public.databasechangeloglock OWNER TO postgrestest;
 
 --
--- Name: d_company d_company_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: d_company d_company_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.d_company
@@ -210,7 +219,7 @@ ALTER TABLE ONLY public.d_company
 
 
 --
--- Name: d_customer d_customer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: d_customer d_customer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.d_customer
@@ -218,7 +227,7 @@ ALTER TABLE ONLY public.d_customer
 
 
 --
--- Name: d_designation d_designation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: d_designation d_designation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.d_designation
@@ -226,7 +235,7 @@ ALTER TABLE ONLY public.d_designation
 
 
 --
--- Name: d_invoice d_invoice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: d_invoice d_invoice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.d_invoice
@@ -234,7 +243,7 @@ ALTER TABLE ONLY public.d_invoice
 
 
 --
--- Name: databasechangeloglock databasechangeloglock_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: databasechangeloglock databasechangeloglock_pkey; Type: CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.databasechangeloglock
@@ -242,7 +251,7 @@ ALTER TABLE ONLY public.databasechangeloglock
 
 
 --
--- Name: d_customer fk_com_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: d_customer fk_com_id; Type: FK CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.d_customer
@@ -250,7 +259,7 @@ ALTER TABLE ONLY public.d_customer
 
 
 --
--- Name: d_invoice fk_cus_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: d_invoice fk_cus_id; Type: FK CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.d_invoice
@@ -258,7 +267,7 @@ ALTER TABLE ONLY public.d_invoice
 
 
 --
--- Name: d_designation fk_ivc_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: d_designation fk_ivc_id; Type: FK CONSTRAINT; Schema: public; Owner: postgrestest
 --
 
 ALTER TABLE ONLY public.d_designation
@@ -266,6 +275,6 @@ ALTER TABLE ONLY public.d_designation
 
 
 --
--- PostgreSQL database dump complete
+-- postgrestestQL database dump complete
 --
 

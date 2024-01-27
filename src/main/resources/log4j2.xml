@@ -6,16 +6,16 @@
     <!-- Console logger -->
     <Console name="Console" target="SYSTEM_OUT">
       <PatternLayout>
-        <Pattern>${pattern}</Pattern>
+        <Pattern>%d{yyyy-MM-dd HH:mm:ss} %5p %pid --- [%t] %c : %msg%n%throwable</Pattern>
       </PatternLayout>
     </Console>
 
     <!-- File rotation logger -->
-    <RollingFile fileName="${filepath}/${filename}" filePattern="${filepath}/archives/$${date:${rolloverunit}}/circe/logs-%d{yyyy-MM-dd}.log.zip"
+    <RollingFile fileName="/circe/circe.log" filePattern="/circe/archives/$${date:yyyy-ww}/circe/logs-%d{yyyy-MM-dd}.log.zip"
       name="RollingFile">
       <DefaultRolloverStrategy max="365"/>
       <PatternLayout>
-        <Pattern>${pattern}</Pattern>
+        <Pattern>%d{yyyy-MM-dd HH:mm:ss} %5p %pid --- [%t] %c : %msg%n%throwable</Pattern>
       </PatternLayout>
       <!-- Maximum number of rollover files (1 year) -->
       <Policies>

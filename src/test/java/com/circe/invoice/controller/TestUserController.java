@@ -2,16 +2,15 @@ package com.circe.invoice.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-import com.circe.invoice.configuration.BaseTest;
+import com.circe.invoice.configuration.TestContainers;
 import com.circe.invoice.dto.user.CreateUserDto;
 import com.circe.invoice.dto.user.UserDto;
 import com.circe.invoice.factory.UserFactoryUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,21 +22,18 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-@RunWith(SpringRunner.class)
-@TestPropertySource(locations = {"classpath:test.properties"})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
-public class TestUserController extends BaseTest {
+class TestUserController extends TestContainers {
 
-  @Autowired private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
+
 
   private JacksonTester<UserDto> jsonUserDto;
   private JacksonTester<CreateUserDto> jsonCreateUserDto;
 
-  @Before
+  @BeforeEach
   public void before() {
 
     JacksonTester.initFields(this, new ObjectMapper());
@@ -51,7 +47,7 @@ public class TestUserController extends BaseTest {
    */
   @Test
   @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
-  public void testGetUser() throws Exception {
+  void testGetUser() throws Exception {
 
     // Given
     String url = "/api/auth/user";
@@ -68,8 +64,8 @@ public class TestUserController extends BaseTest {
     UserDto userDto = jsonUserDto.parse(response.getContentAsString()).getObject();
 
     // Then
-    Assert.assertEquals(HttpStatus.OK.value(), response.getStatus());
-    Assert.assertEquals("admin", userDto.getUserCode());
+    Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
+    Assertions.assertEquals("admin", userDto.getUserCode());
   }
 
   /**
@@ -80,7 +76,7 @@ public class TestUserController extends BaseTest {
   @Test
   @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
   @Transactional
-  public void testDeleteUser() throws Exception {
+  void testDeleteUser() throws Exception {
 
     // Given
     String url = "/api/auth/user";
@@ -95,7 +91,7 @@ public class TestUserController extends BaseTest {
             .getResponse();
 
     // Then
-    Assert.assertEquals(HttpStatus.OK.value(), response.getStatus());
+    Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
   }
 
   /**
@@ -106,7 +102,7 @@ public class TestUserController extends BaseTest {
   @Test
   @WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
   @Transactional
-  public void testCreateUserAuthority() throws Exception {
+  void testCreateUserAuthority() throws Exception {
 
     // Given
     CreateUserDto createUserDto = UserFactoryUtils.generateCreateClientDto();
@@ -128,7 +124,7 @@ public class TestUserController extends BaseTest {
     UserDto userDto = jsonUserDto.parse(response.getContentAsString()).getObject();
 
     // Then
-    Assert.assertEquals(HttpStatus.OK.value(), response.getStatus());
-    Assert.assertEquals(createUserDto.getUserCode(), userDto.getUserCode());
+    Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
+    Assertions.assertEquals(createUserDto.getUserCode(), userDto.getUserCode());
   }
 }
