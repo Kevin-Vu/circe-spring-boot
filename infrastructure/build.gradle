@@ -1,0 +1,15 @@
+dependencies {
+    implementation project(':domain')
+
+    // MapStruct for object mapping
+    implementation 'org.mapstruct:mapstruct:1.6.2'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.postgresql:postgresql:42.7.4'
+    implementation 'org.springframework.data:spring-data-envers'
+
+    // Development tools
+    //developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
