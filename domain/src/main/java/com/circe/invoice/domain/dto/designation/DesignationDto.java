@@ -2,8 +2,7 @@ package com.circe.invoice.domain.dto.designation;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

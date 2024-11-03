@@ -1,9 +1,10 @@
 package com.circe.invoice.domain.repository.referential;
 
-import com.circe.invoice.infrastructure.repository.referential.authority.AuthorityEntity;
+import com.circe.invoice.domain.dto.authority.AuthorityDto;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuthorityRepository {
-  AuthorityEntity findByName(String name);
+  Optional<AuthorityDto> findByName(String name);
 }

@@ -1,9 +1,10 @@
 package com.circe.invoice.domain.repository.data;
 
-import com.circe.invoice.infrastructure.repository.data.company.CompanyEntity;
+import com.circe.invoice.domain.dto.company.CompanyDto;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CompanyRepository  {
-  CompanyEntity findByName(String name);
+  Optional<CompanyDto> findByName(String name);
 }

@@ -4,7 +4,6 @@ import com.circe.invoice.domain.dto.user.CreateUserDto;
 import com.circe.invoice.domain.dto.user.UserDto;
 import com.circe.invoice.domain.exception.BusinessException;
 import com.circe.invoice.domain.repository.referential.UserRepository;
-import com.circe.invoice.infrastructure.repository.referential.user.UserMapper;
 import com.circe.invoice.domain.repository.referential.AuthorityRepository;
 import com.circe.invoice.domain.service.UserService;
 import com.circe.invoice.domain.util.BCryptManagerUtil;
@@ -25,7 +24,6 @@ public class UserServiceImpl implements UserService {
   private final AuthorityRepository authorityRepository;
   private final UserRepository userRepository;
   private final BCryptManagerUtil bCryptManagerUtil;
-  private final UserMapper userMapper;
 
   /**
    * Implement a custom Principal for Spring Security, in CurrentUser we have the id of the user and
@@ -37,9 +35,8 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String userCode) {
-    UserEntity userEntity = this.userRepository.findByUserCode(userCode);
-    if (userEntity == null)
-      throw new UsernameNotFoundException("User not found : user code : " + userCode);
+    UserDto user = this.userRepository.findByUserCode(userCode)
+        .orElseThrow(() -> new BusinessException(""));
 
     List<RightEntity> rights = userEntity.getAuthority().getRightEntities();
     List<GrantedAuthority> authorities =

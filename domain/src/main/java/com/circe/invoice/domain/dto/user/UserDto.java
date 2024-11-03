@@ -2,11 +2,10 @@ package com.circe.invoice.domain.dto.user;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
 
   private Integer id;
