@@ -1,9 +1,8 @@
-package com.circe.invoice.domain.mapper;
+package com.circe.invoice.infrastructure.repository.referential.user;
 
 import com.circe.invoice.domain.dto.user.CreateUserDto;
 import com.circe.invoice.domain.dto.user.UserDto;
 import com.circe.invoice.infrastructure.repository.referential.authority.AuthorityEntity;
-import com.circe.invoice.infrastructure.repository.referential.user.UserEntity;
 import com.circe.invoice.infrastructure.repository.referential.authority.JpaAuthorityRepository;
 import org.mapstruct.*;
 

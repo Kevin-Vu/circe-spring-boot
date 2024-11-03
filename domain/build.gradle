@@ -1,6 +1,9 @@
-dependencies {
-    implementation project(':infrastructure')
+plugins {
+    id 'org.springframework.boot' // if this module should be a Spring Boot application
+    id 'io.spring.dependency-management'
+}
 
+dependencies {
     // MapStruct for object mapping
     implementation 'org.mapstruct:mapstruct:1.6.2'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'

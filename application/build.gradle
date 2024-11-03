@@ -17,7 +17,4 @@ dependencies {
 
     // Commons Validator
     implementation 'commons-validator:commons-validator:1.9.0'
-
-    // Liquibase for database migrations
-    implementation 'org.liquibase:liquibase-core:4.24.0'
 }
