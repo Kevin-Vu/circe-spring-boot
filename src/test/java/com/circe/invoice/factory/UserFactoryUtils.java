@@ -10,30 +10,30 @@ public class UserFactoryUtils {
 
   public static UserDto generateClientDto() {
     return UserDto.builder()
-        .firstname(RandomStringUtils.randomAlphabetic(20))
-        .lastname(RandomStringUtils.randomAlphabetic(20))
-        .userCode(RandomStringUtils.randomAlphabetic(10))
+        .firstname(RandomStringUtils.insecure().nextAlphabetic(20))
+        .lastname(RandomStringUtils.insecure().nextAlphabetic(20))
+        .userCode(RandomStringUtils.insecure().nextAlphabetic(10))
         .langCode("FR")
         .email(
-            RandomStringUtils.randomAlphabetic(10).toLowerCase()
+            RandomStringUtils.insecure().nextAlphabetic(10).toLowerCase()
                 + "@"
-                + RandomStringUtils.randomAlphabetic(5).toLowerCase()
+                + RandomStringUtils.insecure().nextAlphabetic(5).toLowerCase()
                 + ".fr")
         .build();
   }
 
   public static CreateUserDto generateCreateClientDto() {
     return CreateUserDto.builder()
-        .firstname(RandomStringUtils.randomAlphabetic(30))
-        .lastname(RandomStringUtils.randomAlphabetic(30))
+        .firstname(RandomStringUtils.insecure().nextAlphabetic(30))
+        .lastname(RandomStringUtils.insecure().nextAlphabetic(30))
         .email(
-            RandomStringUtils.randomAlphabetic(10).toLowerCase()
+            RandomStringUtils.insecure().nextAlphabetic(10).toLowerCase()
                 + "@"
-                + RandomStringUtils.randomAlphabetic(5).toLowerCase()
+                + RandomStringUtils.insecure().nextAlphabetic(5).toLowerCase()
                 + ".fr")
-        .userCode(RandomStringUtils.randomAlphabetic(10))
+        .userCode(RandomStringUtils.insecure().nextAlphabetic(10))
         .langCode("FR")
-        .password(RandomStringUtils.randomAlphanumeric(10))
+        .password(RandomStringUtils.insecure().nextAlphanumeric(10))
         .build();
   }
 }

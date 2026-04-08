@@ -5,12 +5,8 @@ import javax.sql.DataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -18,12 +14,12 @@ import org.springframework.data.envers.repository.support.EnversRevisionReposito
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
 @EnableJpaRepositories(
     basePackages = {"com.circe.invoice.repository.referential"},
     repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class,
@@ -48,9 +44,12 @@ public class DataSourceReferentialConfiguration {
   @Primary
   @Bean(name = "entityManagerFactoryReferential")
   public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(
-      EntityManagerFactoryBuilder builder,
       @Qualifier("dataSourceReferential") DataSource dataSource) {
-    return builder.dataSource(dataSource).packages("com.circe.invoice.entity.referential").build();
+    LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+    factory.setDataSource(dataSource);
+    factory.setPackagesToScan("com.circe.invoice.entity.referential");
+    factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+    return factory;
   }
 
   @Primary
@@ -58,11 +57,6 @@ public class DataSourceReferentialConfiguration {
   public PlatformTransactionManager transactionManager(
       @Qualifier("entityManagerFactoryReferential") EntityManagerFactory entityManagerFactory) {
     return new JpaTransactionManager(entityManagerFactory);
-  }
-
-  @ConfigurationProperties
-  public LiquibaseProperties primaryLiquibaseProperties() {
-    return new LiquibaseProperties();
   }
 
   @Bean("primaryLiquibase")

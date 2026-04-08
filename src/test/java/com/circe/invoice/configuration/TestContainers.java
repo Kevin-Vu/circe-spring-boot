@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
@@ -19,7 +18,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @TestPropertySource(locations = {"classpath:test.properties"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class TestContainers {
 
@@ -34,7 +32,7 @@ public class TestContainers {
   @Container
   public static PostgreSQLContainer<?> postgreSQLContainerData =
         (PostgreSQLContainer<?>)
-            new PostgreSQLContainer("postgres:11.1")
+            new PostgreSQLContainer("postgres:17.9")
                 .withInitScript("dump_circe_data.sql")
                 .withDatabaseName(DB_NAME_DATA)
                 .withUsername(DB_USER)
@@ -50,7 +48,7 @@ public class TestContainers {
               .withPassword(DB_PASS);
 
   @BeforeAll
-  public static void setUp() {
+  static void setUp() {
     postgreSQLContainerData.withInitScript("dump_circe_data.sql");
     postgreSQLContainerData.start();
 
@@ -62,9 +60,9 @@ public class TestContainers {
   void setUpPort() {
     RestAssured.baseURI = "http://localhost:" + port;
   }
-  
+
   @AfterAll
-  public static void tearDown() {
+  static void tearDown() {
     postgreSQLContainerData.stop();
     postgreSQLContainerReferential.stop();
   }
@@ -79,5 +77,4 @@ public class TestContainers {
     registry.add("spring.datasource.referential.username", postgreSQLContainerReferential::getUsername);
     registry.add("spring.datasource.referential.password", postgreSQLContainerReferential::getPassword);
   }
-
 }
