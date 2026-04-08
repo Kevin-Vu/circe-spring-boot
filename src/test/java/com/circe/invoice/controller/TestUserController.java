@@ -6,37 +6,40 @@ import com.circe.invoice.configuration.TestContainers;
 import com.circe.invoice.dto.user.CreateUserDto;
 import com.circe.invoice.dto.user.UserDto;
 import com.circe.invoice.factory.UserFactoryUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.context.WebApplicationContext;
 
 class TestUserController extends TestContainers {
 
-  @Autowired
   private MockMvc mockMvc;
 
+  @Autowired
+  private WebApplicationContext webApplicationContext;
 
   private JacksonTester<UserDto> jsonUserDto;
   private JacksonTester<CreateUserDto> jsonCreateUserDto;
 
   @BeforeEach
   public void before() {
-
-    JacksonTester.initFields(this, new ObjectMapper());
+    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+        .apply(SecurityMockMvcConfigurers.springSecurity())
+        .build();
+    JacksonTester.initFields(this, JsonMapper.builder().build());
     MockitoAnnotations.openMocks(this);
   }
 
@@ -51,7 +54,7 @@ class TestUserController extends TestContainers {
 
     // Given
     String url = "/api/auth/user";
-    HttpHeaders params = new HttpHeaders();
+    LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
     params.add("id", "1");
 
     // When
@@ -80,7 +83,7 @@ class TestUserController extends TestContainers {
 
     // Given
     String url = "/api/auth/user";
-    HttpHeaders params = new HttpHeaders();
+    LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
     params.add("id", "1");
 
     // When
