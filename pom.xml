@@ -185,7 +185,7 @@
     <lombok.version>1.18.34</lombok.version>
 
     <mapstruct.version>1.6.2</mapstruct.version>
-    <postgresql.version>42.7.4</postgresql.version>
+    <postgresql.version>42.7.11</postgresql.version>
     <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
 
     <testcontainers.version>1.20.2</testcontainers.version>
